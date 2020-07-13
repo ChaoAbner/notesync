@@ -1,0 +1,40 @@
+# spring
+spring:
+  # devtools
+  devtools:
+    restart:
+      enabled: true
+  # 时间格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  # redis
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+    username: root
+    password: 123456
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 30000
+
+
+server:
+  port: 8899
+  servlet:
+    context-path:
+
+
+mybatis-plus:
+  type-aliases-package: com.cvte.notesync.entity
+  global-config:
+    db-config:
+      id-type: auto
+      capital-mode: true
+      table-underline: true

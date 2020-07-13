@@ -1,6 +1,8 @@
 package com.cvte.notesync.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.data.annotation.Transient;
 
@@ -8,11 +10,12 @@ import java.util.Date;
 
 @Data
 public class Note {
+
+    @TableId(type = IdType.AUTO)
     private int id;
 
     private String content;
 
-    @TableField(exist = false)
     private String title;
 
     @TableField(exist = false)
