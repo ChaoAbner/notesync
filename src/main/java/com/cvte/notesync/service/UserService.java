@@ -7,7 +7,7 @@ public interface UserService {
 
     User findUserByUsername(String username);
 
-    void insertUser(String username);
+    User insertUserByUsername(String username);
 
-    void logout(String username);
+    void deleteUserByUsername(String username);
 }

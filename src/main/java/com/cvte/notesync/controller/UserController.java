@@ -1,7 +1,7 @@
 package com.cvte.notesync.controller;
 
 import com.cvte.notesync.entity.User;
-import com.cvte.notesync.entity.VO;
+import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +16,22 @@ public class UserController {
 
     @GetMapping("/{username}")
     @ApiOperation("根据用户名查询用户")
-    public VO findUserByUsername(@PathVariable String username) {
+    public Result findUserByUsername(@PathVariable String username) {
         User user = userService.findUserByUsername(username);
-        return VO.success(user);
+        return Result.success(user);
     }
 
     @PostMapping("/{username}")
     @ApiOperation("插入一个新用户")
-    public VO insertUser(@PathVariable String username) {
-        userService.insertUser(username);
-        return VO.success();
+    public Result insertUser(@PathVariable String username) {
+        userService.insertUserByUsername(username);
+        return Result.success();
     }
 
     @DeleteMapping("/{username}")
-    @ApiOperation("退出登录")
-    public VO logout(@PathVariable String username) {
-        userService.logout(username);
-        return VO.success();
+    @ApiOperation("删除用户")
+    public Result logout(@PathVariable String username) {
+        userService.deleteUserByUsername(username);
+        return Result.success();
     }
 }

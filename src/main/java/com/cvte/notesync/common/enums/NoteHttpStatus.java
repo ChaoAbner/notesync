@@ -1,14 +1,19 @@
-package com.cvte.notesync.constant;
+package com.cvte.notesync.common.enums;
 
-import org.springframework.http.HttpStatus;
+import com.cvte.notesync.constant.NoteHttpCode;
 
 public enum NoteHttpStatus {
     /**
      * 错误
      */
-    ILLEGAL("非法操作", NoteHttpCode.ILLEGAL_ERROR_CODE),
-    PARAMEER("参数错误", NoteHttpCode.PARAM_ERROR_CODE),
-    REJECT("拒绝访问", NoteHttpCode.REJECT_ERROR_CODE),
+    ILLEGAL_OPERATION("非法操作", NoteHttpCode.ILLEGAL_ERROR),
+    PARAMETER_ERROR("参数错误", NoteHttpCode.PARAM_ERROR),
+    REJECT_ACCESS("拒绝访问", NoteHttpCode.REJECT_ERROR),
+    USER_NOT_LOGIN("未登录", NoteHttpCode.PERMISSION_ERROR),
+    SYSTEM_ERROR("系统错误", NoteHttpCode.SYSTEM_ERROR),
+    TOKEN_EXPIRE_ERROR("系统错误", NoteHttpCode.TOKEN_EXPIRE),
+    ORDER_ERROR("系统错误", NoteHttpCode.ORDER_ERROR),
+
     /**
      * 成功
      */

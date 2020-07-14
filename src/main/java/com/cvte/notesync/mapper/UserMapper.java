@@ -2,9 +2,11 @@ package com.cvte.notesync.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cvte.notesync.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
 
     @Select("select * from user where username = #{username}")

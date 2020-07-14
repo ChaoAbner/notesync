@@ -9,7 +9,7 @@ public class RedisKeyUtil {
      * @param userId
      * @return
      */
-    public static String userKey(String userId) {
+    public static String userKey(int userId) {
         return "user" + SPLIT + userId;
     }
 
@@ -18,7 +18,7 @@ public class RedisKeyUtil {
      * @param userId
      * @return
      */
-    public static String noteListKey(String userId) {
+    public static String noteListKey(int userId) {
         return "notes" + SPLIT + userId;
     }
 
@@ -27,7 +27,7 @@ public class RedisKeyUtil {
      * @param noteId
      * @return
      */
-    public static String noteKey(String noteId) {
+    public static String noteKey(int noteId) {
         return "note" + SPLIT + noteId;
     }
 }

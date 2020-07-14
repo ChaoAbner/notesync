@@ -30,4 +30,10 @@ public class NoteMapperTest {
 
         noteMapper.insert(note);
     }
+
+    @Test
+    public void selectNote() {
+        Note note = noteMapper.selectById(1);
+        System.out.println(note);
+    }
 }

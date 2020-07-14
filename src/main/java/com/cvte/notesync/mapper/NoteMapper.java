@@ -2,9 +2,9 @@ package com.cvte.notesync.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cvte.notesync.entity.Note;
+import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
+@Mapper
 public interface NoteMapper extends BaseMapper<Note> {
 
 }
