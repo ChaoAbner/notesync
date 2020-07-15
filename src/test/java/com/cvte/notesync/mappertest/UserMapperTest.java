@@ -1,17 +1,15 @@
-package com.cvte.notesync;
+package com.cvte.notesync.mappertest;
 
 import com.cvte.notesync.entity.User;
 import com.cvte.notesync.mapper.UserMapper;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -21,33 +19,43 @@ class UserMapperTest {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 插入用户
+     */
     @Test
     void insertUser() {
         User user = new User();
 
         user.setRegisterTime(new Date());
         user.setUsername("abd");
-        for (int i = 0; i < 10; i++) {
-            userMapper.insert(user);
-        }
+        int i = userMapper.insert(user);
+        Assert.assertEquals(1L, i);
     }
 
+    /**
+     * 根据id查找用户
+     */
     @Test
-    void selectUsers() {
-        List<User> users = userMapper.selectList(null);
-
-        for (User user : users) {
-            System.out.println(user);
-        }
+    void selectUserById() {
+        User user = userMapper.selectById(3L);
+        System.out.println(user);
     }
 
+    /**
+     * 根据username查找用户
+     */
     @Test
     void selectUserByUsername() {
-        User abd = userMapper.selectByUsername("abd");
+        User abd = userMapper.selectByUsername("用户1");
         System.out.println(abd);
     }
 
+    /**
+     * 根据id删除用户
+     */
     @Test
-    void deleteUser() {
+    void deleteUserById() {
+        int i = userMapper.deleteById(3);
+        Assert.assertEquals(1L, i);
     }
 }

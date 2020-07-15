@@ -1,4 +1,4 @@
-package com.cvte.notesync;
+package com.cvte.notesync.utilstest;
 
 
 import com.cvte.notesync.entity.Audience;
@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * Jwt测试
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class JwtTest {

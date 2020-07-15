@@ -1,6 +1,8 @@
 package com.cvte.notesync;
 
 
+import com.cvte.notesync.entity.Audience;
+import com.cvte.notesync.utils.SpringContextUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +14,7 @@ public class OrderTest {
 
     @Test
     public void test() {
-        String a = "Bearer-" + "fsjhvkjsd";
-        System.out.println(a.substring(7));
+        Audience audience = (Audience) SpringContextUtil.getBean("audience");
+        System.out.println(audience);
     }
 }
