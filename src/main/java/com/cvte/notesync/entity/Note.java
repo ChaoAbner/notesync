@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 public class Note implements Serializable {
 
+    private static final long serialVersionUID = 6472297922229580773L;
+
     @TableId(type = IdType.AUTO)
     private int id;
 
@@ -31,8 +33,14 @@ public class Note implements Serializable {
     private Date updateTime;
 
     public Note() {
+        init();
+    }
+
+    public void init() {
         this.status = 1;
         this.version = 1;
+        this.createTime = new Date();
+        this.updateTime = new Date();
     }
 
     public Note clearContent() {
