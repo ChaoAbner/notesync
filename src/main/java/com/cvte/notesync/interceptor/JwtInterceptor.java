@@ -6,10 +6,9 @@ import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
 import com.cvte.notesync.entity.Audience;
 import com.cvte.notesync.utils.JwtUtil;
+import com.cvte.notesync.utils.SpringContextUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -44,13 +43,14 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
         }
         // 拿到token
         String token = authHeader.substring(7);
-        if(audience == null){
-            BeanFactory factory = WebApplicationContextUtils.
-                    getRequiredWebApplicationContext(request.getServletContext());
-            audience = (Audience) factory.getBean("audience");
-        }
+//        if(audience == null){
+//            BeanFactory factory = WebApplicationContextUtils.
+//                    getRequiredWebApplicationContext(request.getServletContext());
+//            audience = (Audience) factory.getBean("audience");
+//        }
+        audience = (Audience) SpringContextUtil.getBean("audience");
         // 解析的时候会判断token是否过期以及其他异常，如果有异常会全局抛出
-        JwtUtil.parseJwt(token, audience.getBase64Secret());
+        JwtUtil.parseJwt(token, this.audience.getBase64Secret());
 
         return true;
     }
