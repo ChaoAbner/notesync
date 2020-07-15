@@ -33,23 +33,21 @@ public class NoteController {
     @PostMapping("/detail/user/{username}")
     @ApiOperation("插入一条新的笔记")
     public Result insertNode(@PathVariable String username, String title, String content) {
-        // 用户有效性校验
-        noteService.insertNote(title, content);
+        noteService.insertNote(title, content, username);
         return Result.success();
     }
 
     @PutMapping("/{noteId}/user/{username}")
     @ApiOperation("根据笔记id更新笔记")
-    public Result updateNote(@PathVariable int noteId, @PathVariable String username, String title, String content) {
-        // 用户有效性校验
-        noteService.updateNote(noteId, title, content);
+    public Result updateNote(@PathVariable int noteId, @PathVariable String username,
+                             String title, String content) {
+        noteService.updateNote(noteId, title, content, username);
         return Result.success();
     }
 
     @DeleteMapping("/{noteId}/user/{username}")
     @ApiOperation("根据笔记id删除笔记")
     public Result deleteNode(@PathVariable int noteId, @PathVariable String username) {
-        // 用户有效性校验
         noteService.deleteNode(noteId, username);
         return Result.success();
     }
