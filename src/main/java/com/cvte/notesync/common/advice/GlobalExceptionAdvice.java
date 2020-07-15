@@ -33,6 +33,23 @@ public class GlobalExceptionAdvice {
     }
 
     /**
+     * 处理assert的非法异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public Result illegalException(IllegalArgumentException e) {
+        logger.error(e.getMessage());
+        return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
+    }
+
+    @ExceptionHandler(value = NullPointerException.class)
+    public Result nullPointerExeption(NullPointerException e) {
+        logger.error(e.getMessage());
+        return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
+    }
+
+    /**
      * 处理可能发生的异常
      * @param request
      * @param e
