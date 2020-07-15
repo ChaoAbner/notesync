@@ -6,6 +6,7 @@ import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.service.NoteService;
 import com.cvte.notesync.service.SyncService;
 import com.cvte.notesync.utils.RedisKeyUtil;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -32,13 +33,10 @@ public class SyncServiceImpl implements SyncService {
     public Object isNeedSync(int version, int noteId) {
         String key = RedisKeyUtil.noteKey(noteId);
         Note note  = (Note) redisTemplate.opsForValue().get(key);
-        assert note != null;
-
+        Assert.notNull(note, "笔记不存在");
         JSONObject jo = new JSONObject();
         jo.put("need", 0);
-        jo.put("version", version);
         if (version != note.getVersion()) {
-            jo.put("version", version + 1);
             jo.put("need", 1);
         }
         return jo;
@@ -51,7 +49,7 @@ public class SyncServiceImpl implements SyncService {
      */
     @Override
     public Note syncNoteToClient(int noteId) {
-        return noteMapper.selectById(noteId);
+        return noteService.findNoteById(noteId);
     }
 
     /**
@@ -59,10 +57,12 @@ public class SyncServiceImpl implements SyncService {
      * @param noteId
      * @param title
      * @param content
+     * @return version
      */
     @Override
-    public void syncNodeFromClient(int noteId, String title, String content) {
+    public int syncNodeFromClient(int noteId, String title, String content) {
         // 更新MySQL
-        noteService.updateNote(noteId, title, content);
+        Note note = noteService.updateNote(noteId, title, content, "用户2");
+        return note.getVersion();
     }
 }

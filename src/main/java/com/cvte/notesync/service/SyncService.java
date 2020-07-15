@@ -8,6 +8,6 @@ public interface SyncService {
 
     Note syncNoteToClient(int noteId);
 
-    void syncNodeFromClient(int nodeId, String title, String content);
+    int syncNodeFromClient(int nodeId, String title, String content);
 
 }

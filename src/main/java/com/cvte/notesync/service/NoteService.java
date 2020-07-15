@@ -10,9 +10,9 @@ public interface NoteService {
 
     Note findNoteById(int noteId);
 
-    void insertNote(String title, String content);
+    void insertNote(String title, String content, String username);
 
-    void updateNote(int noteId, String title, String content);
+    Note updateNote(int noteId, String title, String content, String username);
 
     void deleteNode(int noteId, String username);
 }
