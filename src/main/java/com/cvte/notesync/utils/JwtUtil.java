@@ -5,14 +5,12 @@ import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
 import com.cvte.notesync.entity.Audience;
 import io.jsonwebtoken.*;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
 
-@Component
 public class JwtUtil {
 
     public static final String AUTH_HEADER_KEY = "Authorization";
