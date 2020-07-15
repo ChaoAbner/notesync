@@ -1,5 +1,8 @@
 package com.cvte.notesync.constant;
 
+/**
+ * http响应码
+ */
 public class NoteHttpCode {
 
     /**
@@ -20,11 +23,17 @@ public class NoteHttpCode {
     // token过期
     public static final int TOKEN_EXPIRE = 40005;
 
-    // 其他错误
-    public static final int ORDER_ERROR = 40006;
+    // 笔记不存在
+    public static final int NOTE_NOT_EXIST_ERROR = 40006;
+
+    // 空指针
+    public static final int NULL_POINTER_ERROR = 40007;
 
     // 系统错误
     public static final int SYSTEM_ERROR = 50001;
+
+    // 其他错误
+    public static final int ORDER_ERROR = 41000;
 
     /**
      * 成功码
