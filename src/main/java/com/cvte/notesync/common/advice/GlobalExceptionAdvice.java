@@ -60,6 +60,6 @@ public class GlobalExceptionAdvice {
     public Result exception(HttpServletRequest request, Exception e){
         // 记录到日志
         logger.error(e.toString());
-        return Result.error(NoteHttpCode.ORDER_ERROR, "其他错误");
+        return Result.error(NoteHttpCode.ORDER_ERROR, e.toString());
     }
 }

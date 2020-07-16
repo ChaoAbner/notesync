@@ -12,9 +12,15 @@ public enum NoteHttpStatus {
     USER_NOT_LOGIN("未登录", NoteHttpCode.PERMISSION_ERROR),
     SYSTEM_ERROR("系统错误", NoteHttpCode.SYSTEM_ERROR),
     TOKEN_EXPIRE_ERROR("token已过期", NoteHttpCode.TOKEN_EXPIRE),
-    ORDER_ERROR("其他错误", NoteHttpCode.ORDER_ERROR),
+    ORDER_ERROR("未知错误", NoteHttpCode.ORDER_ERROR),
     NULL_POINTER_ERROR("空指针", NoteHttpCode.NULL_POINTER_ERROR),
     NOTE_NOT_EXIST("笔记不存在", NoteHttpCode.NOTE_NOT_EXIST_ERROR),
+
+    /**
+     * 提示
+     */
+    USER_NO_NOTES("用户没有笔记", NoteHttpCode.USER_NO_NOTES),
+
     /**
      * 成功
      */

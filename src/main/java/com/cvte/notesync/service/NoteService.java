@@ -10,7 +10,7 @@ public interface NoteService {
 
     Note findNoteById(int noteId);
 
-    void insertNote(String title, String content, String username);
+    Note insertNote(String title, String content, String username);
 
     Note updateNote(int noteId, String title, String content, String username);
 

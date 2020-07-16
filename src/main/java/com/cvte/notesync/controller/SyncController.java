@@ -1,7 +1,8 @@
 package com.cvte.notesync.controller;
 
-import com.cvte.notesync.entity.Note;
+import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.response.Result;
+import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.service.SyncService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,13 @@ public class SyncController {
         return Result.success(note);
     }
 
-    @PutMapping("/note/{noteId}")
+    @PutMapping("/note/{noteId}/user/{username}")
     @ApiOperation("向服务端同步笔记")
-    public Result syncNoteFromClient(@PathVariable int noteId, String title, String content) {
-        syncService.syncNodeFromClient(noteId, title, content);
-        return Result.success();
+    public Result syncNoteFromClient(@PathVariable int noteId, @PathVariable String username,
+                                     @RequestParam String title, @RequestParam String content) {
+        int version = syncService.syncNodeFromClient(noteId, username, title, content);
+        JSONObject json = new JSONObject();
+        json.put("version", version);
+        return Result.success(json);
     }
 }

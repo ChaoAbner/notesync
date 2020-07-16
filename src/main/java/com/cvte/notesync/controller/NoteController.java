@@ -1,7 +1,7 @@
 package com.cvte.notesync.controller;
 
-import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.common.response.Result;
+import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.service.NoteService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +32,16 @@ public class NoteController {
 
     @PostMapping("/detail/user/{username}")
     @ApiOperation("插入一条新的笔记")
-    public Result insertNode(@PathVariable String username, String title, String content) {
-        noteService.insertNote(title, content, username);
-        return Result.success();
+    public Result insertNode(@PathVariable String username,
+                             @RequestParam String title, @RequestParam String content) {
+        Note note = noteService.insertNote(title, content, username);
+        return Result.success(note);
     }
 
     @PutMapping("/{noteId}/user/{username}")
     @ApiOperation("根据笔记id更新笔记")
     public Result updateNote(@PathVariable int noteId, @PathVariable String username,
-                             String title, String content) {
+                             @RequestParam String title, @RequestParam String content) {
         noteService.updateNote(noteId, title, content, username);
         return Result.success();
     }

@@ -56,7 +56,7 @@ public class NoteControllerTest {
      */
     @Test
     public void findNotesByUsername() throws Exception {
-        mockMvc.perform(get(path + "/user/用户2")
+        mockMvc.perform(get(path + "/user/abcc")
                 .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code", equalTo(0)))
@@ -70,10 +70,10 @@ public class NoteControllerTest {
     @Test
     public void insertNote() throws Exception {
 
-        mockMvc.perform(post(path + "/detail/user/用户2")
+        mockMvc.perform(post(path + "/detail/user/abcc")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("title", "标题111")
-                .param("content", "内容1222")
+                .param("title", "标题1222")
+                .param("content", "")
                 .characterEncoding("utf-8")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

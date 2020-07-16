@@ -41,7 +41,9 @@ public class NoteServiceTest {
      */
     @Test
     public void insertNote() {
-        noteService.insertNote(note.getTitle(), note.getContent(), "用户4");
+        for (int i = 0; i < 10; i++) {
+            noteService.insertNote(note.getTitle(), note.getContent(), "用户2");
+        }
     }
 
     /**
@@ -49,8 +51,8 @@ public class NoteServiceTest {
      */
     @Test
     public void selectNoteById() {
-        Note note = noteService.findNoteById(5);
-        System.out.println(note);
+        Note note = noteService.findNoteById(59);
+        System.out.println(note.getUpdateTime().getTime());
     }
 
     /**
@@ -58,7 +60,7 @@ public class NoteServiceTest {
      */
     @Test
     public void selectNotesByUsername() {
-        List<Note> notes = noteService.findNotesByUserName("用户4");
+        List<Note> notes = noteService.findNotesByUserName("abcc");
         for (Note note : notes) {
             System.out.println(note);
         }

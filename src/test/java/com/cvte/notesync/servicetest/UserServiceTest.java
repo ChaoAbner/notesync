@@ -23,7 +23,7 @@ public class UserServiceTest {
 
     @Test
     public void insertUserByUsername() {
-        User user = userService.insertUserByUsername("用户4");
+        User user = userService.insertUserByUsername("abcc");
         System.out.println(user);
     }
 
