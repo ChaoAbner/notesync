@@ -19,6 +19,7 @@ public class NoteController {
     @GetMapping("/user/{username}")
     @ApiOperation("通过用户名查找笔记列表")
     public Result findNotesByUsername(@PathVariable String username) {
+        // TODO 修改参数 username => userId
         List<Note> notes = noteService.findNotesByUserName(username);
         return Result.success(notes);
     }
@@ -34,6 +35,7 @@ public class NoteController {
     @ApiOperation("插入一条新的笔记")
     public Result insertNode(@PathVariable String username,
                              @RequestParam String title, @RequestParam String content) {
+        // TODO 修改参数 username => userId
         Note note = noteService.insertNote(title, content, username);
         return Result.success(note);
     }
@@ -42,6 +44,7 @@ public class NoteController {
     @ApiOperation("根据笔记id更新笔记")
     public Result updateNote(@PathVariable int noteId, @PathVariable String username,
                              @RequestParam String title, @RequestParam String content) {
+        // TODO 修改参数 username => userId
         noteService.updateNote(noteId, title, content, username);
         return Result.success();
     }
@@ -49,6 +52,7 @@ public class NoteController {
     @DeleteMapping("/{noteId}/user/{username}")
     @ApiOperation("根据笔记id删除笔记")
     public Result deleteNode(@PathVariable int noteId, @PathVariable String username) {
+        // TODO 修改参数 username => userId
         noteService.deleteNode(noteId, username);
         return Result.success();
     }

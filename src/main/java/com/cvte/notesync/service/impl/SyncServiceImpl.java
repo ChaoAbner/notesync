@@ -61,6 +61,7 @@ public class SyncServiceImpl implements SyncService {
      */
     @Override
     public int syncNodeFromClient(int noteId, String username, String title, String content) {
+        // TODO 修改参数 username => userId
         // 更新MySQL
         Note note = noteService.updateNote(noteId, title, content, username);
         return note.getVersion();

@@ -34,6 +34,7 @@ public class SyncController {
     @ApiOperation("向服务端同步笔记")
     public Result syncNoteFromClient(@PathVariable int noteId, @PathVariable String username,
                                      @RequestParam String title, @RequestParam String content) {
+        // TODO 修改参数 username => userId
         int version = syncService.syncNodeFromClient(noteId, username, title, content);
         JSONObject json = new JSONObject();
         json.put("version", version);

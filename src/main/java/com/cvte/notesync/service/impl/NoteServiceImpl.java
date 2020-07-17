@@ -31,6 +31,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<Note> findNotesByUserName(String username) {
+        // TODO 修改参数 username => userId
         User user = userMapper.selectByUsername(username);
 
         String key = RedisKeyUtil.noteListKey(user.getId());
@@ -70,6 +71,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note insertNote(String title, String content, String username) {
+        // TODO 修改参数 username => userId
         // TODO 校验笔记是否所属当前用户
         User user = userMapper.selectByUsername(username);
 
