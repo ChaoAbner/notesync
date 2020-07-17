@@ -28,7 +28,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     public Result noteException(HttpServletRequest request, NoteException e){
         // 记录到日志
-        logger.debug(e.toString());
+        logger.error(e.toString());
         return Result.error(e.getCode(), e.getMsg());
     }
 
@@ -39,13 +39,18 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
     public Result illegalException(IllegalArgumentException e) {
-        logger.debug(e.getMessage());
+        logger.error(e.getMessage());
         return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
     }
 
+    /**
+     * 处理空指针异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = NullPointerException.class)
     public Result nullPointerExeption(NullPointerException e) {
-        logger.debug(e.getMessage());
+        logger.error(e.getMessage());
         return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
     }
 
@@ -59,7 +64,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     public Result exception(HttpServletRequest request, Exception e){
         // 记录到日志
-        logger.debug(e.toString());
+        logger.error(e.toString());
         return Result.error(NoteHttpCode.ORDER_ERROR, e.toString());
     }
 }

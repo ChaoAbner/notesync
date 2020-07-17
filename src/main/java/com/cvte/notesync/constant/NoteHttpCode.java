@@ -8,6 +8,7 @@ public class NoteHttpCode {
     /**
      * 提示码
      */
+    // 用户没有笔记
     public static final int USER_NO_NOTES = 10001;
 
     /**

@@ -23,7 +23,7 @@ public class JwtTest {
     public void parseJwt() {
         String token = JwtUtil.createJwt("1", "chaochao", audience);
         System.out.println(token);
-        String userId = JwtUtil.getUserId(token, audience.getBase64Secret());
+        int userId = JwtUtil.getUserId(token, audience.getBase64Secret());
         System.out.println("userId:" + userId);
         String username = JwtUtil.getUsername(token, audience.getBase64Secret());
         System.out.println("username:" + username);

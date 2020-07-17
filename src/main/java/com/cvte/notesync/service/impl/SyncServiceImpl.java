@@ -1,6 +1,7 @@
 package com.cvte.notesync.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.service.NoteService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+@SuppressWarnings("ALL")
 @Service
 public class SyncServiceImpl implements SyncService {
 
@@ -33,7 +35,7 @@ public class SyncServiceImpl implements SyncService {
     public Object isNeedSync(int version, int noteId) {
         String key = RedisKeyUtil.noteKey(noteId);
         Note note  = (Note) redisTemplate.opsForValue().get(key);
-        Assert.notNull(note, "笔记不存在");
+        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
         JSONObject jo = new JSONObject();
         jo.put("need", 0);
         if (version != note.getVersion()) {

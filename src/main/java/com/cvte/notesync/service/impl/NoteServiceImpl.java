@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@SuppressWarnings("ALL")
 @Service
 public class NoteServiceImpl implements NoteService {
 
@@ -29,18 +30,24 @@ public class NoteServiceImpl implements NoteService {
     @Autowired
     RedisTemplate redisTemplate;
 
+    /**
+     * 查找笔记列表
+     * @param username
+     * @return
+     */
     @Override
     public List<Note> findNotesByUserName(String username) {
-        // TODO 修改参数 username => userId
+        // TODO 修改参数 username => userId 拦击器实现
         User user = userMapper.selectByUsername(username);
 
         String key = RedisKeyUtil.noteListKey(user.getId());
+        // 根据修改时间来排序
+        // TODO 增加分页
         Set<ZSetOperations.TypedTuple<Object>> set =
                 redisTemplate.opsForZSet().reverseRangeWithScores(key, 0, -1);
         Iterator<ZSetOperations.TypedTuple<Object>> iterator = set.iterator();
-        if (set == null) {
-            throw new NoteException(NoteHttpStatus.USER_NO_NOTES);
-        }
+        Assert.notNull(set, NoteHttpStatus.USER_NO_NOTES.getErrMsg());
+
         ArrayList<Note> list = new ArrayList<>();
         // 装入笔记
         while (iterator.hasNext()) {
@@ -50,25 +57,37 @@ public class NoteServiceImpl implements NoteService {
             if (note != null)
                 list.add(note);
         }
-
         return list;
     }
 
+    /**
+     * 根据id查找笔记
+     * @param noteId
+     * @return
+     */
     @Override
     public Note findNoteById(int noteId) {
         String key = RedisKeyUtil.noteKey(noteId);
         Note note = (Note) redisTemplate.opsForValue().get(key);
-        Assert.notNull(note, "笔记不存在");
+        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
         if (note.getStatus() == 2) {
 //            throw new NoteException(NoteHttpStatus.NOTE_NOT_EXIST);
             return null;
         }
         // 聚合笔记内容
+//        TODO 循环数据库
         String content = noteMapper.selectById(note.getId()).getContent();
         note.setContent(content);
         return note;
     }
 
+    /**
+     * 插入笔记
+     * @param title
+     * @param content
+     * @param username
+     * @return
+     */
     @Override
     public Note insertNote(String title, String content, String username) {
         // TODO 修改参数 username => userId
@@ -96,6 +115,14 @@ public class NoteServiceImpl implements NoteService {
         return note;
     }
 
+    /**
+     * 更新笔记
+     * @param noteId
+     * @param title
+     * @param content
+     * @param username
+     * @return
+     */
     @Override
     public Note updateNote(int noteId, String title, String content, String username) {
         // TODO 校验笔记是否所属当前用户
@@ -107,7 +134,7 @@ public class NoteServiceImpl implements NoteService {
         // 更新redis
         String key = RedisKeyUtil.noteKey(noteId);
         Note rNote = (Note) redisTemplate.opsForValue().get(key);
-        Assert.notNull(rNote, "笔记不存在");
+        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
         // 更新版本，时间
         rNote.setVersion(rNote.getVersion() + 1);
         rNote.setTitle(title);
@@ -121,6 +148,11 @@ public class NoteServiceImpl implements NoteService {
         return rNote;
     }
 
+    /**
+     * 删除笔记
+     * @param noteId
+     * @param username
+     */
     @Override
     public void deleteNode(int noteId, String username) {
         // TODO 校验笔记是否所属当前用户
@@ -128,7 +160,7 @@ public class NoteServiceImpl implements NoteService {
         String key = RedisKeyUtil.noteKey(noteId);
         // 设置status = 2
         Note note = (Note) redisTemplate.opsForValue().get(key);
-        Assert.notNull(note, "笔记不存在");
+        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
         note.setStatus(2);
         note.setUpdateTime(new Date());
         redisTemplate.opsForValue().set(key, note);

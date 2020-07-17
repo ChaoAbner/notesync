@@ -5,7 +5,7 @@ public class RedisKeyUtil {
     private static final String SPLIT = ":";
 
     /**
-     * 保存用户的key
+     * 用户
      * @param userId
      * @return
      */
@@ -14,7 +14,7 @@ public class RedisKeyUtil {
     }
 
     /**
-     * 保存用户的笔记列表
+     * 用户的笔记列表
      * @param userId
      * @return
      */

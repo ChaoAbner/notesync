@@ -43,7 +43,7 @@ public enum NoteHttpStatus {
         return null;
     }
 
-        public String getErrMsg() {
+    public String getErrMsg() {
         return errMsg;
     }
 

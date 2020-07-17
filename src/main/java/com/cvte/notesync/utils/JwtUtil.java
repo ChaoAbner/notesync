@@ -1,6 +1,5 @@
 package com.cvte.notesync.utils;
 
-
 import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
 import com.cvte.notesync.entity.Audience;
@@ -14,7 +13,7 @@ import java.util.Date;
 public class JwtUtil {
 
     public static final String AUTH_HEADER_KEY = "Authorization";
-    public static final String TOKEN_PREFIX = "Bearer-";
+    public static final String TOKEN_PREFIX = "Bearer.";
 
     /**
      * 解析jwt
@@ -93,8 +92,8 @@ public class JwtUtil {
      * @param base64Security
      * @return
      */
-    public static String getUserId(String jwtToken, String base64Security) {
-        return parseJwt(jwtToken, base64Security).get("userId", String.class);
+    public static int getUserId(String jwtToken, String base64Security) {
+        return parseJwt(jwtToken, base64Security).get("userId", Integer.class);
     }
 
     /**

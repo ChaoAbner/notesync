@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@SuppressWarnings("ALL")
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -20,11 +21,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RedisTemplate redisTemplate;
 
+    /**
+     * 查找用户
+     * @param username
+     * @return
+     */
     @Override
     public User findUserByUsername(String username) {
         return userMapper.selectByUsername(username);
     }
 
+    /**
+     * 插入用户
+     * @param username
+     * @return
+     */
     @Override
     public User insertUserByUsername(String username) {
         User user = new User();
@@ -38,6 +49,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * 删除用户
+     * @param username
+     */
     @Override
     public void deleteUserByUsername(String username) {
         // 查询user

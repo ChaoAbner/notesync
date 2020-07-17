@@ -37,8 +37,9 @@ public class SessionController {
             user = userService.insertUserByUsername(username);
         }
         String token = JwtUtil.createJwt(String.valueOf(user.getId()), username, audience);
+//        token = JwtUtil.TOKEN_PREFIX + token;
         // 设置到响应头
-        response.setHeader(JwtUtil.AUTH_HEADER_KEY, JwtUtil.TOKEN_PREFIX + token);
+        response.setHeader(JwtUtil.AUTH_HEADER_KEY, token);
         // 返回给客户端
         JSONObject jo = new JSONObject();
         jo.put("token", token);
