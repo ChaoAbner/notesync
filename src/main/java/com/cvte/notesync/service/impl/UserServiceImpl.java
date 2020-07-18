@@ -31,6 +31,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByUsername(username);
     }
 
+    @Override
+    public User findUserByUserId(int userId) {
+        return userMapper.selectById(userId);
+    }
+
     /**
      * 插入用户
      * @param username

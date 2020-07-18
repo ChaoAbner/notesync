@@ -6,13 +6,13 @@ import com.cvte.notesync.entity.Note;
 import java.util.List;
 
 public interface NoteService {
-    List<Note> findNotesByUserName(String username);
+    List<Note> findNotesByUserId(int userId, int start, int limit);
 
     Note findNoteById(int noteId);
 
-    Note insertNote(String title, String content, String username);
+    Note insertNote(String title, String content, int userId);
 
-    Note updateNote(int noteId, String title, String content, String username);
+    Note updateNote(int noteId, String title, String content, int userId);
 
-    void deleteNode(int noteId, String username);
+    void deleteNode(int noteId, int userId);
 }

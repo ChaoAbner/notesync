@@ -36,8 +36,7 @@ public class SessionController {
         if (user == null) {
             user = userService.insertUserByUsername(username);
         }
-        String token = JwtUtil.createJwt(String.valueOf(user.getId()), username, audience);
-//        token = JwtUtil.TOKEN_PREFIX + token;
+        String token = JwtUtil.createJwt(user.getId(), username, audience);
         // 设置到响应头
         response.setHeader(JwtUtil.AUTH_HEADER_KEY, token);
         // 返回给客户端
@@ -45,10 +44,5 @@ public class SessionController {
         jo.put("token", token);
         jo.put("user", user);
         return Result.success(jo);
-    }
-
-    @DeleteMapping("/{token}")
-    public Result logout(HttpServletResponse response, @PathVariable String token) {
-        return Result.success();
     }
 }

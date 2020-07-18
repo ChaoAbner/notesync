@@ -3,6 +3,7 @@ package com.cvte.notesync.controller;
 import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.service.NoteService;
+import com.cvte.notesync.utils.HolderUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,10 @@ public class NoteController {
     @Autowired
     NoteService noteService;
 
-    @GetMapping("/user/{username}")
-    @ApiOperation("通过用户名查找笔记列表")
-    public Result findNotesByUsername(@PathVariable String username) {
-        // TODO 修改参数 username => userId
-        List<Note> notes = noteService.findNotesByUserName(username);
+    @GetMapping("/user")
+    @ApiOperation("通过用户Id查找笔记列表")
+    public Result findNotesByUserId(@RequestParam int start, @RequestParam int limit) {
+        List<Note> notes = noteService.findNotesByUserId(HolderUtil.getUserId(), start, limit);
         return Result.success(notes);
     }
 
@@ -31,29 +31,25 @@ public class NoteController {
         return Result.success(note);
     }
 
-    @PostMapping("/detail/user/{username}")
+    @PostMapping("/")
     @ApiOperation("插入一条新的笔记")
-    public Result insertNode(@PathVariable String username,
-                             @RequestParam String title, @RequestParam String content) {
-        // TODO 修改参数 username => userId
-        Note note = noteService.insertNote(title, content, username);
+    public Result insertNode(@RequestParam String title, @RequestParam String content) {
+        Note note = noteService.insertNote(title, content, HolderUtil.getUserId());
         return Result.success(note);
     }
 
-    @PutMapping("/{noteId}/user/{username}")
+    @PutMapping("/{noteId}")
     @ApiOperation("根据笔记id更新笔记")
-    public Result updateNote(@PathVariable int noteId, @PathVariable String username,
+    public Result updateNote(@PathVariable int noteId,
                              @RequestParam String title, @RequestParam String content) {
-        // TODO 修改参数 username => userId
-        noteService.updateNote(noteId, title, content, username);
+        noteService.updateNote(noteId, title, content, HolderUtil.getUserId());
         return Result.success();
     }
 
-    @DeleteMapping("/{noteId}/user/{username}")
+    @DeleteMapping("/{noteId}")
     @ApiOperation("根据笔记id删除笔记")
-    public Result deleteNode(@PathVariable int noteId, @PathVariable String username) {
-        // TODO 修改参数 username => userId
-        noteService.deleteNode(noteId, username);
+    public Result deleteNode(@PathVariable int noteId) {
+        noteService.deleteNode(noteId, HolderUtil.getUserId());
         return Result.success();
     }
 

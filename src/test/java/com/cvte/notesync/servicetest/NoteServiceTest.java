@@ -42,7 +42,7 @@ public class NoteServiceTest {
     @Test
     public void insertNote() {
         for (int i = 0; i < 10; i++) {
-            noteService.insertNote(note.getTitle(), note.getContent(), "用户2");
+            noteService.insertNote(note.getTitle(), note.getContent(), 12);
         }
     }
 
@@ -60,7 +60,7 @@ public class NoteServiceTest {
      */
     @Test
     public void selectNotesByUsername() {
-        List<Note> notes = noteService.findNotesByUserName("abcc");
+        List<Note> notes = noteService.findNotesByUserId(12, 0, -1);
         for (Note note : notes) {
             System.out.println(note);
         }
@@ -71,7 +71,7 @@ public class NoteServiceTest {
      */
     @Test
     public void updateNote() {
-        Note note = noteService.updateNote(5, "新的标题2", "新的内容2", "用户2");
+        Note note = noteService.updateNote(5, "新的标题2", "新的内容2", 12);
         System.out.println(note);
     }
 
@@ -80,6 +80,6 @@ public class NoteServiceTest {
      */
     @Test
     public void deleteNoteById() {
-        noteService.deleteNode(5, "用户2");
+        noteService.deleteNode(5, 12);
     }
 }

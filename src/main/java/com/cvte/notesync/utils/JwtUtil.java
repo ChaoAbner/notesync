@@ -13,7 +13,6 @@ import java.util.Date;
 public class JwtUtil {
 
     public static final String AUTH_HEADER_KEY = "Authorization";
-    public static final String TOKEN_PREFIX = "Bearer.";
 
     /**
      * 解析jwt
@@ -41,7 +40,7 @@ public class JwtUtil {
      * @param audience
      * @return
      */
-    public static String createJwt(String userId, String username, Audience audience) {
+    public static String createJwt(int userId, String username, Audience audience) {
         try {
             // 使用HS256加密算法
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;

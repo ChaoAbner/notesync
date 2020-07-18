@@ -28,9 +28,17 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private Audience audience;
 
+    /**
+     * 前置拦截，拦截token并且验证，并且保存用户信息
+     * @param request
+     * @param response
+     * @param handler
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) throws Exception {
+                             Object handler) {
         // 先判断请求是否不需要过滤
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -39,32 +47,33 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
                 return true;
             }
         }
-//        if (HttpMethod.OPTIONS.equals(request.getMethod())) {
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            return true;
-//        }
         // 获取设置的auth
-        String authHeader = request.getHeader(JwtUtil.AUTH_HEADER_KEY);
-        logger.info(JwtUtil.AUTH_HEADER_KEY + ": " + authHeader);
+        String token = request.getHeader(JwtUtil.AUTH_HEADER_KEY);
         // 判断token的合法性
-        if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(JwtUtil.TOKEN_PREFIX)) {
+        if (StringUtils.isBlank(token)) {
             throw new NoteException(NoteHttpStatus.USER_NOT_LOGIN);
         }
         // 拿到token
-        String token = authHeader.substring(7);
-//        if(audience == null){
-//            BeanFactory factory = WebApplicationContextUtils.
-//                    getRequiredWebApplicationContext(request.getServletContext());
-//            audience = (Audience) factory.getBean("audience");
-//        }
         audience = (Audience) SpringContextUtil.getBean("audience");
         Assert.notNull(audience, "audience注入失败");
-        // 解析的时候会判断token是否过期以及其他异常，如果有异常会全局抛出
+        // 解析的时候会判断token是否过期以及其他异常，如果有异常会抛出
         JwtUtil.parseJwt(token, this.audience.getBase64Secret());
-        logger.info("拦截token");
-        // TODO 存储访问用户的信息
+        // 解析出用户Id并且存储
         HolderUtil.setUserId(JwtUtil.getUserId(token, this.audience.getBase64Secret()));
-        logger.info(HolderUtil.getUserId() + "");
+        logger.info("用户id为" + HolderUtil.getUserId() + "的请求访问");
         return true;
+    }
+
+    /**
+     * 请求结束，清除user
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        HolderUtil.clear();
     }
 }
