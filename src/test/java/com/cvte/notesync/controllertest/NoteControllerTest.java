@@ -55,8 +55,8 @@ public class NoteControllerTest {
      * @throws Exception
      */
     @Test
-    public void findNotesByUsername() throws Exception {
-        mockMvc.perform(get(path + "/user/abcc")
+    public void findNotesByUserId() throws Exception {
+        mockMvc.perform(get(path + "/user/?start=0&limit=-1")
                 .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code", equalTo(0)))

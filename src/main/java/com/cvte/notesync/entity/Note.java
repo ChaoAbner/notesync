@@ -20,27 +20,25 @@ public class Note implements Serializable {
 
     private String title;
 
-    @TableField(exist = false)
     private int status;
 
-    @TableField(exist = false)
-    private int version;
+//    private int version;
 
-    @TableField(exist = false)
     private Date createTime;
 
-    @TableField(exist = false)
+//    @TableField(exist = false)
     private Date updateTime;
 
+    @TableField(exist = false)
+    private int userId;
+
     public Note() {
-        init();
+
     }
 
     public void init() {
         this.status = 1;
-        this.version = 1;
         this.createTime = new Date();
-        this.updateTime = new Date();
     }
 
     public Note clearContent() {

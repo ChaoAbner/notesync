@@ -3,11 +3,9 @@ package com.cvte.notesync.service.impl;
 import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
 import com.cvte.notesync.entity.Note;
-import com.cvte.notesync.entity.User;
 import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.mapper.UserMapper;
 import com.cvte.notesync.service.NoteService;
-import com.cvte.notesync.utils.DateTimeUtil;
 import com.cvte.notesync.utils.RedisKeyUtil;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +35,19 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public List<Note> findNotesByUserId(int userId, int start, int limit) {
-        String key = RedisKeyUtil.noteListKey(userId);
+        String userNoteskey = RedisKeyUtil.noteListKey(userId);
         // 根据修改时间排序
         Set<ZSetOperations.TypedTuple<Object>> set =
-                redisTemplate.opsForZSet().reverseRangeWithScores(key, start, limit);
-        Iterator<ZSetOperations.TypedTuple<Object>> iterator = set.iterator();
+                redisTemplate.opsForZSet().reverseRangeWithScores(userNoteskey, start, limit);
+
         Assert.notNull(set, NoteHttpStatus.USER_NO_NOTES.getErrMsg());
+        Iterator<ZSetOperations.TypedTuple<Object>> iterator = set.iterator();
 
         ArrayList<Note> list = new ArrayList<>();
         // 装入笔记
-        // TODO 循环数据库
         while (iterator.hasNext()) {
             ZSetOperations.TypedTuple<Object> next = iterator.next();
-            int noteId = (Integer) next.getValue();
-            Note note = findNoteById(noteId);
+            Note note = (Note) next.getValue();
             if (note != null)
                 list.add(note);
         }
@@ -84,10 +81,9 @@ public class NoteServiceImpl implements NoteService {
      * @return
      */
     @Override
-    public Note insertNote(String title, String content, int userId) {
-        Note note = new Note();
-        note.setTitle(title);
-        note.setContent(content);
+    public Note insertNote(Note note, long updateTimeStamp, int userId) {
+        note.init();
+        note.setUpdateTime(new Date(updateTimeStamp));
         // 入库
         noteMapper.insert(note);
         // 存入redis, 存note笔记实体
@@ -100,8 +96,8 @@ public class NoteServiceImpl implements NoteService {
         if (zSetOp.size(userNotesKey) != 0 && zSetOp.rank(userNotesKey, note.getId()) != null) {
             throw new NoteException(NoteHttpStatus.ILLEGAL_OPERATION);
         }
-        zSetOp.add(userNotesKey, note.getId(), DateTimeUtil.dateToScore(note.getUpdateTime()));
-
+        // 保存笔记实体，以时间戳作为分数
+        zSetOp.add(userNotesKey, note, note.getUpdateTime().getTime());
         return note;
     }
 
@@ -114,28 +110,26 @@ public class NoteServiceImpl implements NoteService {
      * @return
      */
     @Override
-    public Note updateNote(int noteId, String title, String content, int userId) {
-        Note note = new Note();
-        note.setId(noteId);
-        note.setTitle(title);
-        note.setContent(content);
+    public Note updateNote(Note note, long updateTimeStamp, int userId) {
+        // 更新时间
+        note.setUpdateTime(new Date(updateTimeStamp));
         // 更新数据库
         noteMapper.updateById(note);
         // 更新redis
-        String key = RedisKeyUtil.noteKey(noteId);
-        Note rNote = (Note) redisTemplate.opsForValue().get(key);
-        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
-        // 更新版本，时间
-        rNote.setVersion(rNote.getVersion() + 1);
-        rNote.setTitle(title);
-        rNote.setUpdateTime(new Date());
-        redisTemplate.opsForValue().set(key, rNote);
-        // 更新分数
-        User user = userMapper.selectById(userId);
-        String userNotesKey = RedisKeyUtil.noteListKey(user.getId());
-        redisTemplate.opsForZSet().add(userNotesKey, note.getId(),
-                DateTimeUtil.dateToScore(rNote.getUpdateTime()));
-        return rNote;
+        String key = RedisKeyUtil.noteKey(note.getId());
+        Note redisNote = (Note) redisTemplate.opsForValue().get(key);
+        Assert.notNull(redisNote, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
+        String userNotesKey = RedisKeyUtil.noteListKey(userId);
+        // 删除原来sorted set中的note
+        redisTemplate.opsForZSet().remove(userNotesKey, redisNote);
+        // 更新note版本，更新时间
+        redisNote.setVersion(redisNote.getVersion() + 1);
+        redisNote.setTitle(note.getTitle());
+        redisNote.setUpdateTime(note.getUpdateTime());
+        redisTemplate.opsForValue().set(key, redisNote);
+        // 设置新的值和分数
+        redisTemplate.opsForZSet().add(userNotesKey, redisNote, redisNote.getUpdateTime().getTime());
+        return redisNote;
     }
 
     /**
@@ -144,13 +138,13 @@ public class NoteServiceImpl implements NoteService {
      * @param username
      */
     @Override
-    public void deleteNode(int noteId, int userId) {
+    public void deleteNode(int noteId, int updateTimeStamp, int userId) {
         String key = RedisKeyUtil.noteKey(noteId);
         // 设置status = 2
-        Note note = (Note) redisTemplate.opsForValue().get(key);
-        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
-        note.setStatus(2);
-        note.setUpdateTime(new Date());
-        redisTemplate.opsForValue().set(key, note);
+        Note redisNote = (Note) redisTemplate.opsForValue().get(key);
+        Assert.notNull(redisNote, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
+        redisNote.setStatus(2);
+        redisNote.setUpdateTime(new Date(updateTimeStamp));
+        redisTemplate.opsForValue().set(key, redisNote);
     }
 }

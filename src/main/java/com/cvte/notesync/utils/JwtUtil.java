@@ -15,25 +15,6 @@ public class JwtUtil {
     public static final String AUTH_HEADER_KEY = "Authorization";
 
     /**
-     * 解析jwt
-     * @param jwtToken
-     * @param base64Security
-     * @return
-     */
-    public static Claims parseJwt(String jwtToken, String base64Security) {
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
-                    .parseClaimsJws(jwtToken).getBody();
-            return claims;
-        } catch (ExpiredJwtException eje) {
-            throw new NoteException(NoteHttpStatus.TOKEN_EXPIRE_ERROR);
-        } catch (Exception e){
-            throw new NoteException(NoteHttpStatus.ORDER_ERROR);
-        }
-    }
-
-    /**
      * 生成jwt
      * @param userId
      * @param username
@@ -72,6 +53,25 @@ public class JwtUtil {
             return builder.compact();
         } catch (Exception e) {
             throw new NoteException(NoteHttpStatus.SYSTEM_ERROR);
+        }
+    }
+
+    /**
+     * 解析jwt
+     * @param jwtToken
+     * @param base64Security
+     * @return
+     */
+    public static Claims parseJwt(String jwtToken, String base64Security) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
+                    .parseClaimsJws(jwtToken).getBody();
+            return claims;
+        } catch (ExpiredJwtException eje) {
+            throw new NoteException(NoteHttpStatus.TOKEN_EXPIRE_ERROR);
+        } catch (Exception e){
+            throw new NoteException(NoteHttpStatus.ORDER_ERROR);
         }
     }
 

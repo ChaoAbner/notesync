@@ -40,7 +40,7 @@ public class SyncServiceTest {
      */
     @Test
     public void syncNodeFromClient() {
-        int v = syncService.syncNodeFromClient(6, 12, "客户端同步标题3", "客户端同步内容3");
-        System.out.println("更新后的版本为:" + v);
+//        int v = syncService.syncNodeFromClient(6, 12, "客户端同步标题3", "客户端同步内容3");
+//        System.out.println("更新后的版本为:" + v);
     }
 }

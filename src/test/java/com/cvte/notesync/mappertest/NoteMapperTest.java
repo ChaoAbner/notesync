@@ -3,15 +3,18 @@ package com.cvte.notesync.mappertest;
 
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
+import com.cvte.notesync.utils.RedisKeyUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * dao层单元测试
@@ -23,6 +26,9 @@ public class NoteMapperTest {
 
     @Autowired
     NoteMapper noteMapper;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     /**
      * 插入一条笔记
@@ -48,6 +54,27 @@ public class NoteMapperTest {
     public void selectNoteById() {
         Note note = noteMapper.selectById(1);
         System.out.println(note);
+    }
+
+    @Test
+    public void selectBatchNoteByIds() {
+        String userNoteskey = RedisKeyUtil.noteListKey(12);
+        // 根据修改时间排序
+        Set<ZSetOperations.TypedTuple<Object>> set =
+                redisTemplate.opsForZSet().reverseRangeWithScores(userNoteskey, 0, -1);
+
+        Iterator<ZSetOperations.TypedTuple<Object>> iterator = set.iterator();
+        ArrayList<Integer> ids = new ArrayList<>();
+        while (iterator.hasNext()) {
+            ZSetOperations.TypedTuple<Object> next = iterator.next();
+            Integer id = (Integer) next.getValue();
+            ids.add(id);
+        }
+        List<Note> notes = noteMapper.selectBatchIds(ids);
+        for (Note note : notes) {
+            System.out.println(note);
+        }
+
     }
 
     /**

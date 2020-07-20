@@ -31,25 +31,24 @@ public class NoteController {
         return Result.success(note);
     }
 
-    @PostMapping("/")
+    @PostMapping("/timestamp/{updateTimestamp}")
     @ApiOperation("插入一条新的笔记")
-    public Result insertNode(@RequestParam String title, @RequestParam String content) {
-        Note note = noteService.insertNote(title, content, HolderUtil.getUserId());
-        return Result.success(note);
+    public  Result insertNode(@RequestBody Note note, @PathVariable long updateTimestamp) {
+        Note resultNote = noteService.insertNote(note, updateTimestamp, HolderUtil.getUserId());
+        return Result.success(resultNote);
     }
 
-    @PutMapping("/{noteId}")
+    @PutMapping("/timestamp/{updateTimestamp}")
     @ApiOperation("根据笔记id更新笔记")
-    public Result updateNote(@PathVariable int noteId,
-                             @RequestParam String title, @RequestParam String content) {
-        noteService.updateNote(noteId, title, content, HolderUtil.getUserId());
+    public Result updateNote(@RequestBody Note note, @PathVariable long updateTimestamp) {
+        noteService.updateNote(note, updateTimestamp, HolderUtil.getUserId());
         return Result.success();
     }
 
-    @DeleteMapping("/{noteId}")
+    @DeleteMapping("/{noteId}/timestamp/{updateTimestamp}")
     @ApiOperation("根据笔记id删除笔记")
-    public Result deleteNode(@PathVariable int noteId) {
-        noteService.deleteNode(noteId, HolderUtil.getUserId());
+    public Result deleteNode(@PathVariable int noteId, @PathVariable int updateTimestamp) {
+        noteService.deleteNode(noteId, updateTimestamp, HolderUtil.getUserId());
         return Result.success();
     }
 

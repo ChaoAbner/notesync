@@ -1,5 +1,6 @@
 package com.cvte.notesync.utils;
 
+import java.math.BigDecimal;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,10 +30,20 @@ public class DateTimeUtil {
     }
 
     /**
+     * 字符串时间戳转Date
+     * @param timeStamp
+     * @return
+     */
+    public static Date TimeStampToDate(long timeStamp) {
+        return new Date(timeStamp);
+    }
+
+    /**
      * Date转redis的score
      * @param date
      * @return
      */
+    @Deprecated
     public static Double dateToScore(Date date) {
         long time = date.getTime();
         String s = String.valueOf(time);
@@ -40,5 +51,26 @@ public class DateTimeUtil {
         String substring1 = s.substring(6);
         String r = substring + "." + substring1;
         return new Double(r);
+    }
+
+    /**
+     * 保存的分数转date
+     * @param score
+     * @return
+     */
+    public static Date ScoreToDate(double score) {
+        BigDecimal bigDecimal = new BigDecimal(score);
+        String s = bigDecimal.toPlainString();
+        return new Date(Long.parseLong(s));
+    }
+
+    /**
+     * 保存的分数转时间戳
+     * @param score
+     * @return
+     */
+    public static long ScoreToMillis(double score) {
+        Date date = ScoreToDate(score);
+        return date.getTime();
     }
 }
