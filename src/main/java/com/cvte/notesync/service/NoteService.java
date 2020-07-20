@@ -14,5 +14,5 @@ public interface NoteService {
 
     Note updateNote(Note note, long updateTimeStamp, int userId);
 
-    void deleteNode(int noteId, int updateTimeStamp, int userId);
+    void deleteNode(int noteId, long updateTimeStamp, int userId);
 }

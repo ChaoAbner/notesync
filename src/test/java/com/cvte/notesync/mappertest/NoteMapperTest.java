@@ -37,7 +37,7 @@ public class NoteMapperTest {
     public void insertNote() {
         Note note = new Note();
         note.setStatus(1);
-        note.setVersion(1);
+//        note.setVersion(1);
         note.setTitle("士大夫大幅度");
         note.setContent("分隔符VS地方");
         note.setCreateTime(new Date());

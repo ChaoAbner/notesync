@@ -6,11 +6,12 @@ import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.service.NoteService;
 import com.cvte.notesync.service.SyncService;
-import com.cvte.notesync.utils.RedisKeyUtil;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
 
 @SuppressWarnings("ALL")
 @Service
@@ -32,13 +33,13 @@ public class SyncServiceImpl implements SyncService {
      * @return
      */
     @Override
-    public Object isNeedSync(int version, int noteId) {
-        String key = RedisKeyUtil.noteKey(noteId);
-        Note note  = (Note) redisTemplate.opsForValue().get(key);
+    public Object isNeedSync(long localUpdateTime, int noteId) {
+        Note note = noteService.findNoteById(noteId);
         Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
         JSONObject jo = new JSONObject();
         jo.put("need", 0);
-        if (version != note.getVersion()) {
+        // 服务器note更新时间后于本地更新时间,说明需要同步
+        if (note.getUpdateTime().after(new Date(localUpdateTime))) {
             jo.put("need", 1);
         }
         return jo;
@@ -62,9 +63,9 @@ public class SyncServiceImpl implements SyncService {
      * @return version
      */
     @Override
-    public int syncNodeFromClient(Note note, long updateTimeStamp, int userId) {
+    public long syncNodeFromClient(Note note, long updateTimeStamp, int userId) {
         // 更新MySQL
         Note resultNote = noteService.updateNote(note, updateTimeStamp, userId);
-        return resultNote.getVersion();
+        return resultNote.getUpdateTime().getTime();
     }
 }

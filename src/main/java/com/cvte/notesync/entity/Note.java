@@ -1,14 +1,15 @@
 package com.cvte.notesync.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@TableName("n_note")
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 6472297922229580773L;
@@ -22,14 +23,10 @@ public class Note implements Serializable {
 
     private int status;
 
-//    private int version;
-
     private Date createTime;
 
-//    @TableField(exist = false)
     private Date updateTime;
 
-    @TableField(exist = false)
     private int userId;
 
     public Note() {
@@ -41,8 +38,4 @@ public class Note implements Serializable {
         this.createTime = new Date();
     }
 
-    public Note clearContent() {
-        this.content = "";
-        return this;
-    }
 }

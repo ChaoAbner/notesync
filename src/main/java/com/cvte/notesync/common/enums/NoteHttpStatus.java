@@ -10,11 +10,13 @@ public enum NoteHttpStatus {
     PARAMETER_ERROR("参数错误", NoteHttpCode.PARAM_ERROR),
     REJECT_ACCESS("拒绝访问", NoteHttpCode.REJECT_ERROR),
     USER_NOT_LOGIN("未登录", NoteHttpCode.PERMISSION_ERROR),
+    USER_NOT_EXIST("用户不存在", NoteHttpCode.USER_NOT_EXIST),
     SYSTEM_ERROR("系统错误", NoteHttpCode.SYSTEM_ERROR),
     TOKEN_EXPIRE_ERROR("token已过期", NoteHttpCode.TOKEN_EXPIRE),
     ORDER_ERROR("未知错误", NoteHttpCode.ORDER_ERROR),
     NULL_POINTER_ERROR("空指针", NoteHttpCode.NULL_POINTER_ERROR),
     NOTE_NOT_EXIST("笔记不存在", NoteHttpCode.NOTE_NOT_EXIST_ERROR),
+    NOTE_DELETE_FAIL("笔记删除失败", NoteHttpCode.NOTE_DELETE_FAIL),
 
     /**
      * 提示

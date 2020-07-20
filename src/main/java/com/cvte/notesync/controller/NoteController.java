@@ -47,7 +47,7 @@ public class NoteController {
 
     @DeleteMapping("/{noteId}/timestamp/{updateTimestamp}")
     @ApiOperation("根据笔记id删除笔记")
-    public Result deleteNode(@PathVariable int noteId, @PathVariable int updateTimestamp) {
+    public Result deleteNode(@PathVariable int noteId, @PathVariable long updateTimestamp) {
         noteService.deleteNode(noteId, updateTimestamp, HolderUtil.getUserId());
         return Result.success();
     }

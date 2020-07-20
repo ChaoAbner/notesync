@@ -35,6 +35,12 @@ public class NoteHttpCode {
     // 空指针
     public static final int NULL_POINTER_ERROR = 40007;
 
+    // 用户不存在
+    public static final int USER_NOT_EXIST = 40008;
+
+    // 笔记删除失败
+    public static final int NOTE_DELETE_FAIL = 40009;
+
     // 系统错误
     public static final int SYSTEM_ERROR = 50001;
 

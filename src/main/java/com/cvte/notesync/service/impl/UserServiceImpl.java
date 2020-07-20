@@ -1,15 +1,14 @@
 package com.cvte.notesync.service.impl;
 
+import com.cvte.notesync.common.enums.NoteHttpStatus;
+import com.cvte.notesync.common.exception.NoteException;
 import com.cvte.notesync.entity.User;
 import com.cvte.notesync.mapper.UserMapper;
 import com.cvte.notesync.service.UserService;
-import com.cvte.notesync.utils.RedisKeyUtil;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @SuppressWarnings("ALL")
 @Service
@@ -44,13 +43,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User insertUserByUsername(String username) {
         User user = new User();
+        user.init();
         user.setUsername(username);
-        user.setRegisterTime(new Date());
         // 插入数据库
         userMapper.insert(user);
-        // 调用redis服务存储user二进制
-        String key = RedisKeyUtil.userKey(user.getId());
-        redisTemplate.opsForValue().set(key, user);
         return user;
     }
 
@@ -62,10 +58,11 @@ public class UserServiceImpl implements UserService {
     public void deleteUserByUsername(String username) {
         // 查询user
         User user = findUserByUsername(username);
-        Assert.notNull(user, "用户不存在");
-        String key = RedisKeyUtil.userKey(user.getId());
-        // 删除对应user
-        redisTemplate.delete(key);
-        userMapper.deleteById(user.getId());
+        Assert.notNull(user, NoteHttpStatus.USER_NOT_EXIST.getErrMsg());
+        if (user.getStatus() == 2) {
+            throw new NoteException(NoteHttpStatus.USER_NOT_EXIST);
+        }
+        user.setStatus(2);
+        userMapper.updateById(user);
     }
 }

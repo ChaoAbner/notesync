@@ -16,12 +16,10 @@ public class SyncController {
     @Autowired
     SyncService syncService;
 
-    @GetMapping("/{version}/note/{noteId}")
+    @GetMapping("/{localUpdateTime}/note/{noteId}")
     @ApiOperation("判断是否需要同步笔记")
-    public Result isNeedSync(@PathVariable int version, @PathVariable int noteId) {
-        // TODO 直接通过更新时间来判断
-        Object needSync = syncService.isNeedSync(version, noteId);
-
+    public Result isNeedSync(@PathVariable long localUpdateTime, @PathVariable int noteId) {
+        Object needSync = syncService.isNeedSync(localUpdateTime, noteId);
         return Result.success(needSync);
     }
 
@@ -35,9 +33,9 @@ public class SyncController {
     @PutMapping("/note/timestamp/{updateTimeStamp}")
     @ApiOperation("向服务端同步笔记")
     public Result syncNoteFromClient(@RequestBody Note note, @PathVariable long updateTimeStamp) {
-        int version = syncService.syncNodeFromClient(note, updateTimeStamp, HolderUtil.getUserId());
+        long updateTime = syncService.syncNodeFromClient(note, updateTimeStamp, HolderUtil.getUserId());
         JSONObject json = new JSONObject();
-        json.put("version", version);
+        json.put("updateTime", updateTime);
         return Result.success(json);
     }
 }
