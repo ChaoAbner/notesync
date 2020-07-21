@@ -46,7 +46,7 @@ class UserMapperTest {
      */
     @Test
     void selectUserByUsername() {
-        User abd = userMapper.selectByUsername("用户1");
+        User abd = userMapper.selectByUsername("nnnn");
         System.out.println(abd);
     }
 

@@ -1,7 +1,6 @@
 package com.cvte.notesync.service.impl;
 
 import com.cvte.notesync.common.enums.NoteHttpStatus;
-import com.cvte.notesync.common.exception.NoteException;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.mapper.UserMapper;
@@ -48,9 +47,8 @@ public class NoteServiceImpl implements NoteService {
     public Note findNoteById(int noteId) {
         Note note = noteMapper.selectById(noteId);
         Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
-        if (note.getStatus() == 2) {
-            throw new NoteException(NoteHttpStatus.NOTE_NOT_EXIST);
-        }
+        Assert.isTrue(note.getStatus() != 2, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
+
         return note;
     }
 
@@ -68,7 +66,8 @@ public class NoteServiceImpl implements NoteService {
         note.setUpdateTime(new Date(updateTimeStamp));
         note.setUserId(userId);
         // 入库
-        noteMapper.insert(note);
+        int insertResult = noteMapper.insert(note);
+        Assert.isTrue(insertResult == 1, NoteHttpStatus.NOTE_INSERT_FAIL.getErrMsg());
         return note;
     }
 
@@ -84,8 +83,11 @@ public class NoteServiceImpl implements NoteService {
     public Note updateNote(Note note, long updateTimeStamp, int userId) {
         // 更新时间
         note.setUpdateTime(new Date(updateTimeStamp));
+        note.setUserId(userId);
+        note.setStatus(1);
         // 更新数据库
-        noteMapper.updateById(note);
+        int updateResult = noteMapper.updateById(note);
+        Assert.isTrue(updateResult == 1, NoteHttpStatus.NOTE_UPDATE_FAIL.getErrMsg());
         return note;
     }
 
@@ -100,6 +102,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note();
         note.setId(noteId);
         note.setStatus(2);
+        note.setUserId(userId);
         note.setUpdateTime(new Date(updateTimeStamp));
         int deleteResult = noteMapper.updateById(note);
         Assert.isTrue(deleteResult == 1, NoteHttpStatus.NOTE_DELETE_FAIL.getErrMsg());

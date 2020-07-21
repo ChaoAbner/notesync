@@ -5,12 +5,14 @@ import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.service.SyncService;
 import com.cvte.notesync.utils.HolderUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sync")
+@Api(tags = "同步接口")
 public class SyncController {
 
     @Autowired

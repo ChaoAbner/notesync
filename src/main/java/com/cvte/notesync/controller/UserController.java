@@ -1,14 +1,16 @@
 package com.cvte.notesync.controller;
 
-import com.cvte.notesync.entity.User;
 import com.cvte.notesync.common.response.Result;
+import com.cvte.notesync.entity.User;
 import com.cvte.notesync.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@Api(tags = "用户接口")
 public class UserController {
 
     @Autowired

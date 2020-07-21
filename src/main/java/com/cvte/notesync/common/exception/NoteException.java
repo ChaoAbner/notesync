@@ -7,6 +7,7 @@ import lombok.Data;
 public class NoteException extends RuntimeException {
 
     private static final long serialVersionUID = 6419707754310324928L;
+
     private int code;
 
     private String msg;

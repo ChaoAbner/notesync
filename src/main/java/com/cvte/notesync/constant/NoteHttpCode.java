@@ -41,6 +41,11 @@ public class NoteHttpCode {
     // 笔记删除失败
     public static final int NOTE_DELETE_FAIL = 40009;
 
+    // 笔记插入失败
+    public static final int NOTE_INSERT_FAIL = 40010;
+
+    // 笔记更新失败
+    public static final int NOTE_UPDATE_FAIL = 40011;
     // 系统错误
     public static final int SYSTEM_ERROR = 50001;
 

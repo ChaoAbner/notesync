@@ -3,6 +3,7 @@ package com.cvte.notesync.common.enums;
 import com.cvte.notesync.constant.NoteHttpCode;
 
 public enum NoteHttpStatus {
+
     /**
      * 错误
      */
@@ -17,6 +18,8 @@ public enum NoteHttpStatus {
     NULL_POINTER_ERROR("空指针", NoteHttpCode.NULL_POINTER_ERROR),
     NOTE_NOT_EXIST("笔记不存在", NoteHttpCode.NOTE_NOT_EXIST_ERROR),
     NOTE_DELETE_FAIL("笔记删除失败", NoteHttpCode.NOTE_DELETE_FAIL),
+    NOTE_INSERT_FAIL("笔记插入失败", NoteHttpCode.NOTE_INSERT_FAIL),
+    NOTE_UPDATE_FAIL("笔记更新失败", NoteHttpCode.NOTE_UPDATE_FAIL),
 
     /**
      * 提示

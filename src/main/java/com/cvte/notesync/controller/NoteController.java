@@ -4,6 +4,7 @@ import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.service.NoteService;
 import com.cvte.notesync.utils.HolderUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/note")
+@Api(tags = "笔记接口")
 public class NoteController {
 
     @Autowired
@@ -33,13 +35,13 @@ public class NoteController {
 
     @PostMapping("/timestamp/{updateTimestamp}")
     @ApiOperation("插入一条新的笔记")
-    public  Result insertNode(@RequestBody Note note, @PathVariable long updateTimestamp) {
+    public Result insertNode(@RequestBody Note note, @PathVariable long updateTimestamp) {
         Note resultNote = noteService.insertNote(note, updateTimestamp, HolderUtil.getUserId());
         return Result.success(resultNote);
     }
 
     @PutMapping("/timestamp/{updateTimestamp}")
-    @ApiOperation("根据笔记id更新笔记")
+    @ApiOperation("更新一条笔记")
     public Result updateNote(@RequestBody Note note, @PathVariable long updateTimestamp) {
         noteService.updateNote(note, updateTimestamp, HolderUtil.getUserId());
         return Result.success();

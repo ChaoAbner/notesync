@@ -39,7 +39,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) {
-        // 先判断请求是否不需要过滤
+        // 先判断请求是否不需要过滤, 携带IgnoreJwt注解的请求放行
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             IgnoreJwt jwtIgnore  = handlerMethod.getMethodAnnotation(IgnoreJwt.class);
@@ -58,7 +58,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
         Assert.notNull(audience, "audience注入失败");
         // 解析的时候会判断token是否过期以及其他异常，如果有异常会抛出
         JwtUtil.parseJwt(token, this.audience.getBase64Secret());
-        // 解析出用户Id并且存储
+        // 解析出用户Id并且存储到ThreadLocal
         HolderUtil.setUserId(JwtUtil.getUserId(token, this.audience.getBase64Secret()));
         logger.info("用户id为" + HolderUtil.getUserId() + "的请求访问");
         return true;
@@ -73,7 +73,8 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
      * @throws Exception
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                                Exception ex) throws Exception {
         HolderUtil.clear();
     }
 }

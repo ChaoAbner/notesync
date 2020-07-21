@@ -40,7 +40,7 @@ mybatis-plus:
       table-underline: true
 
 
-##jwt配置
+# jwt配置
 audience:
   # 代表这个JWT的接收对象,存入audience
   clientId: 098f6bcd4621d373cade4e832627b4f6

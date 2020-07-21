@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 统一异常处理
  */
-
 @ControllerAdvice
 public class GlobalExceptionAdvice {
 
@@ -26,9 +23,9 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(value = NoteException.class)
     @ResponseBody
-    public Result noteException(HttpServletRequest request, NoteException e){
+    public Result noteException(NoteException e){
         // 记录到日志
-        logger.error(e.toString());
+        logger.error(e.getMsg() + " | " + e.getMessage());
         return Result.error(e.getCode(), e.getMsg());
     }
 
@@ -38,6 +35,7 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
+    @ResponseBody
     public Result illegalException(IllegalArgumentException e) {
         logger.error(e.getMessage());
         return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
@@ -49,6 +47,7 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler(value = NullPointerException.class)
+    @ResponseBody
     public Result nullPointerExeption(NullPointerException e) {
         logger.error(e.getMessage());
         return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
@@ -56,13 +55,12 @@ public class GlobalExceptionAdvice {
 
     /**
      * 处理可能发生的异常
-     * @param request
      * @param e
      * @return
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public Result exception(HttpServletRequest request, Exception e){
+    public Result exception(Exception e){
         // 记录到日志
         logger.error(e.toString());
         return Result.error(NoteHttpCode.ORDER_ERROR, e.toString());
