@@ -1,6 +1,7 @@
 package com.cvte.notesync.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cvte.notesync.annotation.ValidNote;
 import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.service.SyncService;
@@ -34,6 +35,7 @@ public class SyncController {
 
     @PutMapping("/note")
     @ApiOperation("向服务端同步笔记")
+    @ValidNote
     public Result syncNoteFromClient(@RequestBody Note note, @RequestParam(name = "timestamp") long updateTimeStamp) {
         long updateTime = syncService.syncNodeFromClient(note, updateTimeStamp, HolderUtil.getUserId());
         JSONObject json = new JSONObject();

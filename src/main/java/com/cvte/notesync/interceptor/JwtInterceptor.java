@@ -46,6 +46,8 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
             if (jwtIgnore != null) {
                 return true;
             }
+        } else {
+            return true;
         }
         // 获取设置的auth
         String token = request.getHeader(JwtUtil.AUTH_HEADER_KEY);
