@@ -1,6 +1,8 @@
 package com.cvte.notesync.mappertest;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.utils.RedisKeyUtil;
@@ -52,8 +54,20 @@ public class NoteMapperTest {
      */
     @Test
     public void selectNoteById() {
-        Note note = noteMapper.selectById(1);
+        Note note = noteMapper.selectById(26);
         System.out.println(note);
+    }
+
+    @Test
+    public void selectByWrapper() {
+        Note note = noteMapper.selectById(26);
+        QueryWrapper<Note> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", note.getUserId()).eq("status", 3);
+//        List<Note> notes = noteMapper.selectList(wrapper);
+        Page<Note> notePage = new Page<Note>().setCurrent(0).setSize(2);
+        Page<Note> notePage1 = noteMapper.selectPage(notePage, wrapper);
+        System.out.println(notePage1.getRecords());
+        System.out.println(notePage1.getTotal());
     }
 
     @Test

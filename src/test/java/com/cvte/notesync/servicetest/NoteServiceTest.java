@@ -46,6 +46,11 @@ public class NoteServiceTest {
         }
     }
 
+    @Test
+    public void updateNoteStatus() {
+        noteService.updateNoteStatus(20, 3, 3);
+    }
+
     /**
      * 通过noteId查找笔记
      */
@@ -60,7 +65,7 @@ public class NoteServiceTest {
      */
     @Test
     public void selectNotesByUsername() {
-        List<Note> notes = noteService.findNotesByUserId(12, 0, -1);
+        List<Note> notes = noteService.findNotesByUserId(3, 0, 20);
         for (Note note : notes) {
             System.out.println(note);
         }

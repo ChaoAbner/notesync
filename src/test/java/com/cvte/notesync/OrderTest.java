@@ -5,8 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Date;
+import org.springframework.web.util.HtmlUtils;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -14,8 +13,9 @@ public class OrderTest {
 
     @Test
     public void test() {
-        Date date = new Date();
-        long time = date.getTime();
-        System.out.println(time);
+        String s = HtmlUtils.htmlEscape("<p>sdfdf123j2h3j2哈哈哈哈哈<br></p>");
+        System.out.println(s);
+        String s1 = HtmlUtils.htmlUnescape(s);
+        System.out.println(s1);
     }
 }

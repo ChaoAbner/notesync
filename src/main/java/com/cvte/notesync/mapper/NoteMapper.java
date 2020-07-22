@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface NoteMapper extends BaseMapper<Note> {
 
-    @Select("select * from n_note where user_id = #{userId} and status != 2" +
+    @Select("select * from n_note where user_id = #{userId} and status = 1" +
             " order by update_time desc limit #{start}, #{limit}")
     List<Note> selectNotesByUserId(@Param("userId") int userId,
                                    @Param("start") int start, @Param("limit") int limit);

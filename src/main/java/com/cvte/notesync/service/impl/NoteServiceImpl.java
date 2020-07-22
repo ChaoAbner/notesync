@@ -1,5 +1,7 @@
 package com.cvte.notesync.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
@@ -26,11 +28,6 @@ public class NoteServiceImpl implements NoteService {
     @Autowired
     RedisTemplate redisTemplate;
 
-    /**
-     * 查找笔记列表
-     * @param username
-     * @return
-     */
     @Override
     public List<Note> findNotesByUserId(int userId, int start, int limit) {
         // 根据修改时间排序
@@ -38,11 +35,6 @@ public class NoteServiceImpl implements NoteService {
         return notes;
     }
 
-    /**
-     * 根据id查找笔记
-     * @param noteId
-     * @return
-     */
     @Override
     public Note findNoteById(int noteId) {
         Note note = noteMapper.selectById(noteId);
@@ -52,13 +44,17 @@ public class NoteServiceImpl implements NoteService {
         return note;
     }
 
-    /**
-     * 插入笔记
-     * @param title
-     * @param content
-     * @param username
-     * @return
-     */
+    @Override
+    public List<Note> findDeletedNotesByUserId(int userId, int start, int limit) {
+        QueryWrapper<Note> wrapper = new QueryWrapper<>();
+        // 设置条件
+        wrapper.eq("user_id", userId).eq("status", 2);
+        // 设置分页
+        Page<Note> page = new Page<Note>().setCurrent(start).setSize(limit);
+        Page<Note> resultPage = noteMapper.selectPage(page, wrapper);
+        return resultPage.getRecords();
+    }
+
     @Override
     public Note insertNote(Note note, long updateTimeStamp, int userId) {
         // 初始化属性
@@ -71,14 +67,6 @@ public class NoteServiceImpl implements NoteService {
         return note;
     }
 
-    /**
-     * 更新笔记
-     * @param noteId
-     * @param title
-     * @param content
-     * @param username
-     * @return
-     */
     @Override
     public Note updateNote(Note note, long updateTimeStamp, int userId) {
         // 更新时间
@@ -91,11 +79,16 @@ public class NoteServiceImpl implements NoteService {
         return note;
     }
 
-    /**
-     * 删除笔记
-     * @param noteId
-     * @param username
-     */
+    @Override
+    public void updateNoteStatus(int noteId, int status, int userId) {
+        Note note = new Note();
+        note.setId(noteId);
+        note.setStatus(status);
+        note.setUserId(userId);
+        int updateResult = noteMapper.updateById(note);
+        Assert.isTrue(updateResult == 1, NoteHttpStatus.NOTE_UPDATE_FAIL.getErrMsg());
+    }
+
     @Override
     public void deleteNode(int noteId, long updateTimeStamp, int userId) {
         // 设置status = 2

@@ -26,12 +26,6 @@ public class SyncServiceImpl implements SyncService {
     @Autowired
     RedisTemplate redisTemplate;
 
-    /**
-     * 判断是否同步
-     * @param version
-     * @param noteId
-     * @return
-     */
     @Override
     public Object isNeedSync(long localUpdateTime, int noteId) {
         Note note = noteService.findNoteById(noteId);
@@ -45,23 +39,11 @@ public class SyncServiceImpl implements SyncService {
         return jo;
     }
 
-    /**
-     * 同步笔记到客户端
-     * @param noteId
-     * @return
-     */
     @Override
     public Note syncNoteToClient(int noteId) {
         return noteService.findNoteById(noteId);
     }
 
-    /**
-     * 更新服务端的笔记
-     * @param noteId
-     * @param title
-     * @param content
-     * @return version
-     */
     @Override
     public long syncNodeFromClient(Note note, long updateTimeStamp, int userId) {
         // 更新MySQL
