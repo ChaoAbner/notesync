@@ -49,15 +49,13 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
         } else {
             return true;
         }
-        // 获取设置的auth
+        // 获取token
         String token = request.getHeader(JwtUtil.AUTH_HEADER_KEY);
-        // 判断token的合法性
         if (StringUtils.isBlank(token)) {
             throw new NoteException(NoteHttpStatus.USER_NOT_LOGIN);
         }
-        // 拿到token
         audience = (Audience) SpringContextUtil.getBean("audience");
-        Assert.notNull(audience, "audience注入失败");
+        Assert.notNull(audience, NoteHttpStatus.AUDIENCE_NOT_INJECT.getErrMsg());
         // 解析的时候会判断token是否过期以及其他异常，如果有异常会抛出
         JwtUtil.parseJwt(token, this.audience.getBase64Secret());
         // 解析出用户Id并且存储到ThreadLocal

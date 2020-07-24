@@ -72,7 +72,7 @@ public class NoteServiceImpl implements NoteService {
         // 更新时间
         note.setUpdateTime(new Date(updateTimeStamp));
         note.setUserId(userId);
-        note.setStatus(1);
+        note.setStatus(note.getStatus());
         // 更新数据库
         int updateResult = noteMapper.updateById(note);
         Assert.isTrue(updateResult == 1, NoteHttpStatus.NOTE_UPDATE_FAIL.getErrMsg());

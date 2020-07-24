@@ -50,13 +50,6 @@ public class NoteController {
         return Result.success(resultNote);
     }
 
-    @PutMapping("{noteId}/status/{status}")
-    @ApiOperation("更新笔记的状态")
-    public Result updateNoteStatus(@PathVariable int noteId, @PathVariable int status) {
-        noteService.updateNoteStatus(noteId, status, HolderUtil.getUserId());
-        return Result.success();
-    }
-
     @PutMapping("/")
     @ApiOperation("更新一条笔记")
     @ValidNote

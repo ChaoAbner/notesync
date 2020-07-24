@@ -48,7 +48,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(value = NullPointerException.class)
     @ResponseBody
-    public Result nullPointerExeption(NullPointerException e) {
+    public Result nullPointerException(NullPointerException e) {
         logger.error(e.getMessage());
         return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
     }

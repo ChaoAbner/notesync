@@ -46,6 +46,10 @@ public class NoteHttpCode {
 
     // 笔记更新失败
     public static final int NOTE_UPDATE_FAIL = 40011;
+
+    // audience注入失败
+    public static final int AUDIENCE_INJECT_ERROR = 40012;
+
     // 系统错误
     public static final int SYSTEM_ERROR = 50001;
 

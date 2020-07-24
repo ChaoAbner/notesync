@@ -20,6 +20,7 @@ public enum NoteHttpStatus {
     NOTE_DELETE_FAIL("笔记删除失败", NoteHttpCode.NOTE_DELETE_FAIL),
     NOTE_INSERT_FAIL("笔记插入失败", NoteHttpCode.NOTE_INSERT_FAIL),
     NOTE_UPDATE_FAIL("笔记更新失败", NoteHttpCode.NOTE_UPDATE_FAIL),
+    AUDIENCE_NOT_INJECT("audience注入失败", NoteHttpCode.AUDIENCE_INJECT_ERROR),
 
     /**
      * 提示
