@@ -1,5 +1,6 @@
 package com.cvte.notesync.controller;
 
+import com.cvte.notesync.annotation.ValidParameter;
 import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.User;
 import com.cvte.notesync.service.UserService;
@@ -18,6 +19,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     @ApiOperation("根据用户名查询用户")
+    @ValidParameter
     public Result findUserByUsername(@PathVariable String username) {
         User user = userService.findUserByUsername(username);
         return Result.success(user);
@@ -25,6 +27,7 @@ public class UserController {
 
     @PostMapping("/{username}")
     @ApiOperation("插入一个新用户")
+    @ValidParameter
     public Result insertUser(@PathVariable String username) {
         userService.insertUserByUsername(username);
         return Result.success();
@@ -32,7 +35,8 @@ public class UserController {
 
     @DeleteMapping("/{username}")
     @ApiOperation("删除用户")
-    public Result logout(@PathVariable String username) {
+    @ValidParameter
+    public Result deleteUser(@PathVariable String username) {
         userService.deleteUserByUsername(username);
         return Result.success();
     }

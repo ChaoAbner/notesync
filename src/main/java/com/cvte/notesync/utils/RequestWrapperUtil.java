@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
 
+/**
+ * request包装器，获取request body
+ */
+@Deprecated
 public class RequestWrapperUtil extends HttpServletRequestWrapper {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestWrapperUtil.class);

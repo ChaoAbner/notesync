@@ -2,6 +2,8 @@ package com.cvte.notesync.constant;
 
 public class ValidValue {
 
+    private ValidValue() {}
+
     public static final int USERNAME_MAX_LENGTH = 10;
 
     public static final int NOTE_TITLE_MAX_LENGTH = 30;

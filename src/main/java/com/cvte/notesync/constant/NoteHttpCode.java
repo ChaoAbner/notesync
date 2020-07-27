@@ -5,6 +5,8 @@ package com.cvte.notesync.constant;
  */
 public class NoteHttpCode {
 
+    private NoteHttpCode() {}
+
     /**
      * 提示码
      */

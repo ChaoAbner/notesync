@@ -37,8 +37,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 先判断请求是否不需要过滤, 携带IgnoreJwt注解的请求放行
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;

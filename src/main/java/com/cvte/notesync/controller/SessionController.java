@@ -1,6 +1,7 @@
 package com.cvte.notesync.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cvte.notesync.annotation.ValidParameter;
 import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.Audience;
 import com.cvte.notesync.entity.User;
@@ -38,6 +39,7 @@ public class SessionController {
      */
     @PostMapping("/{username}")
     @ApiOperation("用户登录")
+    @ValidParameter
     public Result login(HttpServletResponse response, @PathVariable String username) {
         User user = userService.findUserByUsername(username);
         // 不存在则创建用户

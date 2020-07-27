@@ -1,6 +1,6 @@
 package com.cvte.notesync.controller;
 
-import com.cvte.notesync.annotation.ValidNote;
+import com.cvte.notesync.annotation.ValidParameter;
 import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.service.NoteService;
@@ -43,7 +43,7 @@ public class NoteController {
 
     @PostMapping("/")
     @ApiOperation("插入一条新的笔记")
-    @ValidNote
+    @ValidParameter
     public Result insertNode(@RequestBody Note note,
                              @RequestParam(name = "timestamp") long updateTimestamp) {
         Note resultNote = noteService.insertNote(note, updateTimestamp, HolderUtil.getUserId());
@@ -52,7 +52,7 @@ public class NoteController {
 
     @PutMapping("/")
     @ApiOperation("更新一条笔记")
-    @ValidNote
+    @ValidParameter
     public Result updateNote(@RequestBody Note note,
                              @RequestParam(name = "timestamp") long updateTimestamp) {
         noteService.updateNote(note, updateTimestamp, HolderUtil.getUserId());
