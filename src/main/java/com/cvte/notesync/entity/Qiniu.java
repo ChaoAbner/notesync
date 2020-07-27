@@ -19,7 +19,6 @@ public class Qiniu {
 
     @Data
     public static class Key {
-
         private String access;
 
         private String secret;

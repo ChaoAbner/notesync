@@ -28,21 +28,12 @@ public class ValidParameterAspect {
 
     @Before("annotationValidParameter()")
     public void doBefore(JoinPoint joinPoint) {
-//        String name = joinPoint.getSignature().getName();
-//        logger.info("前置拦截的方法名：" + name);
         ServletRequestAttributes requestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (requestAttributes == null) {
             return;
         }
         HttpServletRequest request = requestAttributes.getRequest();
-        // 获取请求url
-//        String url = request.getRequestURL().toString();
-        // 获取拦截的方法
-//        String method = request.getMethod();
-        // 获取请求的参数
-//        String queryString = request.getQueryString();
-
         // 获取uri
         String uri = request.getRequestURI();
 

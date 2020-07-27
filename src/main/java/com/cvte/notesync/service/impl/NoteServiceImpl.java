@@ -40,7 +40,6 @@ public class NoteServiceImpl implements NoteService {
         Note note = noteMapper.selectById(noteId);
         Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
         Assert.isTrue(note.getStatus() != 2, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
-
         return note;
     }
 
