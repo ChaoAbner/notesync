@@ -2,14 +2,14 @@ package com.cvte.notesync.utils;
 
 public class HolderUtil {
 
-    private static ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
 
     public static void setUserId(Integer userId) {
         threadLocal.set(userId);
     }
 
     public static int getUserId() {
-        return (int) threadLocal.get();
+        return threadLocal.get();
     }
 
     public static void clear() {

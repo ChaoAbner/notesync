@@ -103,4 +103,10 @@ public class RedisTest {
         Date date = new Date(time);
         System.out.printf(date.toString());
     }
+
+    @Test
+    public void returnRes() {
+        Long add = redisTemplate.opsForSet().add("hahah111", "sdfdf");
+        System.out.println(add);
+    }
 }

@@ -21,6 +21,7 @@ public enum NoteHttpStatus {
     NOTE_INSERT_FAIL("笔记插入失败", NoteHttpCode.NOTE_INSERT_FAIL),
     NOTE_UPDATE_FAIL("笔记更新失败", NoteHttpCode.NOTE_UPDATE_FAIL),
     AUDIENCE_NOT_INJECT("audience注入失败", NoteHttpCode.AUDIENCE_INJECT_ERROR),
+    QINIU_UPLOAD_FAIL("七牛文件上传失败", NoteHttpCode.QINIU_UPLOAD_ERROR),
 
     /**
      * 提示

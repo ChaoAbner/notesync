@@ -15,7 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * aop校验数据接口参数
+ * 校验数据接口参数的合法性
  */
 @Aspect
 @Component

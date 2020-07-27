@@ -52,6 +52,9 @@ public class NoteHttpCode {
     // audience注入失败
     public static final int AUDIENCE_INJECT_ERROR = 40012;
 
+    // 七牛图片上传失败
+    public static final int QINIU_UPLOAD_ERROR = 40013;
+
     // 系统错误
     public static final int SYSTEM_ERROR = 50001;
 

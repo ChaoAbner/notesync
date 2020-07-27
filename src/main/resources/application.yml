@@ -50,3 +50,13 @@ audience:
   name: restapiuser
   # 过期时间，时间戳
   expiresSecond: 120000000
+
+
+# 七牛配置
+qiniu:
+  key:
+    access: kllOMCt2hi_YykRIKf5vpJLn7kyzVm0h0-MQEnOq
+    secret: diQFjAae7S75MPU0wJb7-_UfBRLCAAs-TYohM4WS
+  bucket:
+    header: fosu-community-header
+    url: http://cheader.fosuchao.com/

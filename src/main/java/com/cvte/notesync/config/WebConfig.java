@@ -14,11 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new ValidCheckInterceptor())
-//                .addPathPatterns("/user/**")
-//                .addPathPatterns("/note/**")
-//                .addPathPatterns("/sync/**")
-//                .addPathPatterns("/session/**");
 
         registry.addInterceptor(new JwtInterceptor())
                 .addPathPatterns("/user/**")

@@ -30,4 +30,13 @@ public class RedisKeyUtil {
     public static String noteKey(int noteId) {
         return "note" + SPLIT + noteId;
     }
+
+    /**
+     * 获取某个帖子的所有图片链接
+     * @param noteId
+     * @return
+     */
+    public static String noteImagesKey(int noteId) {
+        return "note" + SPLIT + "images" + SPLIT + noteId;
+    }
 }
