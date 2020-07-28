@@ -1,7 +1,7 @@
 package com.cvte.notesync.utilstest;
 
 
-import com.cvte.notesync.entity.Qiniu;
+import com.cvte.notesync.entity.pojo.Qiniu;
 import com.cvte.notesync.utils.CommonUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;

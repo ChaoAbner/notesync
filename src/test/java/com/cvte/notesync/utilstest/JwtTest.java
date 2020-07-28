@@ -1,7 +1,7 @@
 package com.cvte.notesync.utilstest;
 
 
-import com.cvte.notesync.entity.Audience;
+import com.cvte.notesync.entity.pojo.Audience;
 import com.cvte.notesync.utils.JwtUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
