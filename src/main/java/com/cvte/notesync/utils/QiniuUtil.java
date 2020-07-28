@@ -1,6 +1,6 @@
 package com.cvte.notesync.utils;
 
-import com.cvte.notesync.entity.Qiniu;
+import com.cvte.notesync.entity.pojo.Qiniu;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -47,6 +47,9 @@ public class QiniuUtil {
     }
 
     public static String getToken() {
+        if (qiniu == null) {
+            qiniu = (Qiniu) SpringContextUtil.getBean("qiniu");
+        }
         //密钥配置
         Auth auth = Auth.create(qiniu.getKey().getAccess(), qiniu.getKey().getSecret());
         return auth.uploadToken(qiniu.getBucket().getHeader());
