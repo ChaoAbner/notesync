@@ -59,7 +59,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     public Result nullPointerException(NullPointerException e) {
         logger.error(e.getMessage());
-        return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.getMessage());
+        return Result.error(NoteHttpCode.ILLEGAL_ERROR, e.toString());
     }
 
     /**

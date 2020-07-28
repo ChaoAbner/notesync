@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new JwtInterceptor())
                 .addPathPatterns("/user/**")
                 .addPathPatterns("/note/**")
-                .addPathPatterns("/sync/**");
-
+                .addPathPatterns("/sync/**")
+                .addPathPatterns("image/note/**");
     }
 }

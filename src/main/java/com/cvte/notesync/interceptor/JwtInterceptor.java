@@ -4,7 +4,7 @@ package com.cvte.notesync.interceptor;
 import com.cvte.notesync.annotation.IgnoreJwt;
 import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
-import com.cvte.notesync.entity.Audience;
+import com.cvte.notesync.entity.pojo.Audience;
 import com.cvte.notesync.utils.HolderUtil;
 import com.cvte.notesync.utils.JwtUtil;
 import com.cvte.notesync.utils.SpringContextUtil;

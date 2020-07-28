@@ -1,8 +1,8 @@
 package com.cvte.notesync.constant;
 
-public class RestfulPath {
+public class RestfulURI {
 
-    private RestfulPath() {}
+    private RestfulURI() {}
 
     public static final String NOTE_PATH = "/note";
 

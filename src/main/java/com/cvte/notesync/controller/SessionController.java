@@ -3,7 +3,7 @@ package com.cvte.notesync.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.annotation.ValidParameter;
 import com.cvte.notesync.common.response.Result;
-import com.cvte.notesync.entity.Audience;
+import com.cvte.notesync.entity.pojo.Audience;
 import com.cvte.notesync.entity.User;
 import com.cvte.notesync.service.SessionService;
 import com.cvte.notesync.service.UserService;

@@ -1,7 +1,7 @@
 package com.cvte.notesync.service.impl;
 
 
-import com.cvte.notesync.entity.Audience;
+import com.cvte.notesync.entity.pojo.Audience;
 import com.cvte.notesync.service.SessionService;
 import com.cvte.notesync.utils.JwtUtil;
 import org.springframework.stereotype.Service;

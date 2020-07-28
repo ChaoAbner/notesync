@@ -2,7 +2,7 @@ package com.cvte.notesync.utils;
 
 import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
-import com.cvte.notesync.entity.Audience;
+import com.cvte.notesync.entity.pojo.Audience;
 import io.jsonwebtoken.*;
 
 import javax.crypto.spec.SecretKeySpec;

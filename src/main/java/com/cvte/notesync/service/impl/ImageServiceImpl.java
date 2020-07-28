@@ -2,7 +2,7 @@ package com.cvte.notesync.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.enums.NoteHttpStatus;
-import com.cvte.notesync.entity.Qiniu;
+import com.cvte.notesync.entity.pojo.Qiniu;
 import com.cvte.notesync.service.ImageService;
 import com.cvte.notesync.utils.QiniuUtil;
 import com.cvte.notesync.utils.RedisKeyUtil;
@@ -54,6 +54,9 @@ public class ImageServiceImpl implements ImageService {
         return this.insertLinkOfImageInRedis(fileName, noteId);
     }
 
+    /**
+     * 插入到redis
+     */
     private String insertLinkOfImageInRedis(String fileName, int noteId) {
         String key = RedisKeyUtil.noteImagesKey(noteId);
         String link = qiniu.getBucket().getUrl() + fileName;
@@ -65,6 +68,9 @@ public class ImageServiceImpl implements ImageService {
         return link;
     }
 
+    /**
+     * 检查链接是否存在
+     */
     private void checkLinkExisted(String redisKey, String link) {
         Boolean member = redisTemplate.opsForSet().isMember(redisKey, link);
         Assert.isTrue(!member, "插入失败，链接已存在！");

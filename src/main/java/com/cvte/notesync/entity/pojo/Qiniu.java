@@ -1,4 +1,4 @@
-package com.cvte.notesync.entity;
+package com.cvte.notesync.entity.pojo;
 
 
 import lombok.Data;

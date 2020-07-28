@@ -1,6 +1,6 @@
 package com.cvte.notesync.service;
 
-import com.cvte.notesync.entity.Audience;
+import com.cvte.notesync.entity.pojo.Audience;
 
 import javax.servlet.http.HttpServletResponse;
 
