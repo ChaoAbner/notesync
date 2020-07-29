@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.service.ImageService;
 import com.cvte.notesync.utils.CommonUtil;
+import com.cvte.notesync.utils.ImageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ImageController {
     @PostMapping("/note/{noteId}")
     @ApiOperation("上传图片")
     public Result insertImage(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
+        // 判断是否是图片
+        boolean isImage = ImageUtil.isImage(file.getInputStream());
+
         String link = imageService.insertImage(file.getBytes(), CommonUtil.uuid(), noteId);
         JSONObject jo = new JSONObject();
         jo.put("url", link);

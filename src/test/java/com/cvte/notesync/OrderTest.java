@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.Arrays;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class OrderTest {
@@ -21,6 +23,7 @@ public class OrderTest {
 
     @Test
     public void idxTest() {
-
+        String a = "是s啊1";
+        System.out.println(Arrays.toString(a.getBytes()));
     }
 }
