@@ -3,6 +3,7 @@ package com.cvte.notesync.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.response.Result;
+import com.cvte.notesync.service.FileService;
 import com.cvte.notesync.service.ImageService;
 import com.cvte.notesync.utils.CommonUtil;
 import com.cvte.notesync.utils.ImageUtil;
@@ -23,12 +24,15 @@ public class ImageController {
     @Autowired
     ImageService imageService;
 
+    @Autowired
+    FileService fileService;
+
     @PostMapping("/note/{noteId}")
     @ApiOperation("上传图片到七牛云")
     public Result insertImageToCloud(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
         // 图片格式校验
         ImageUtil.checkImageFormat(file.getInputStream());
-        String link = imageService.insertImage(file.getBytes(), CommonUtil.uuid(), noteId);
+        String link = imageService.insertImage(file.getBytes(), CommonUtil.getUuid(), noteId);
         JSONObject jo = new JSONObject();
         jo.put("url", link);
         return Result.success(jo);
@@ -39,7 +43,7 @@ public class ImageController {
     public Result insertImageToLocal(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
         // 图片格式校验
         ImageUtil.checkImageFormat(file.getInputStream());
-
+        fileService.saveMultipartFile(file, CommonUtil.getShortUuid(), noteId);
         return Result.success();
     }
 

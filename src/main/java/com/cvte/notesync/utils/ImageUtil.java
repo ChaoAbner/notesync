@@ -59,6 +59,6 @@ public class ImageUtil {
 
     public static void checkImageFormat(InputStream is) {
         boolean isImage = isImage(is);
-        Assert.isTrue(!isImage, "图片格式不正确！");
+        Assert.isTrue(isImage, "图片格式不正确！");
     }
 }

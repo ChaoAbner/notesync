@@ -38,7 +38,7 @@ public class QiniuTest {
     @Test
     public void upload() throws QiniuException {
 
-        String fileName = CommonUtil.uuid();
+        String fileName = CommonUtil.getUuid();
         //上传到七牛后保存的文件名
         String key = fileName + ".jpg";
         //上传文件的路径

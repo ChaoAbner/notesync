@@ -24,13 +24,13 @@ import java.util.Set;
 public class ImageServiceImpl implements ImageService {
 
     @Autowired
-    RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Autowired
-    NoteMapper noteMapper;
+    private NoteMapper noteMapper;
 
     @Autowired
-    Qiniu qiniu;
+    private Qiniu qiniu;
 
     /**
      * 使用本地filePath上传
@@ -65,7 +65,7 @@ public class ImageServiceImpl implements ImageService {
     /**
      * 检查笔记是否存在以及是否有效
      */
-    private void checkNoteExistAndValid(int noteId) {
+    public void checkNoteExistAndValid(int noteId) {
         Note note = noteMapper.selectById(noteId);
         Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
         Assert.isTrue(note.getStatus() == 1, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());

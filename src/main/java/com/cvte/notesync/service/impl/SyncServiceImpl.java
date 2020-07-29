@@ -18,13 +18,13 @@ import java.sql.Date;
 public class SyncServiceImpl implements SyncService {
 
     @Autowired
-    NoteMapper noteMapper;
+    private NoteMapper noteMapper;
 
     @Autowired
-    NoteService noteService;
+    private NoteService noteService;
 
     @Autowired
-    RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Override
     public Object isNeedSync(long localUpdateTime, int noteId) {

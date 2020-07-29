@@ -69,6 +69,6 @@ qiniu:
 
 # 本地文件映射
 file:
-  path: D:/file/imooc/course/
+  path: D:/note-file/
   domain: http://127.0.0.1:8899/file/
 

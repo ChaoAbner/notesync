@@ -3,15 +3,17 @@ package com.cvte.notesync;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.HtmlUtils;
 
-import java.util.Arrays;
-
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class OrderTest {
+
+    @Value("${file.domain}")
+    String domain;
 
     @Test
     public void test() {
@@ -23,7 +25,6 @@ public class OrderTest {
 
     @Test
     public void idxTest() {
-        String a = "是s啊1";
-        System.out.println(Arrays.toString(a.getBytes()));
+        System.out.printf(domain);
     }
 }

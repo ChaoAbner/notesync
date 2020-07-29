@@ -20,13 +20,13 @@ import java.util.List;
 public class NoteServiceImpl implements NoteService {
 
     @Autowired
-    NoteMapper noteMapper;
+    private NoteMapper noteMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Override
     public List<Note> findNotesByUserId(int userId, int start, int limit) {
