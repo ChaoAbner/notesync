@@ -2,7 +2,9 @@ package com.cvte.notesync.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.enums.NoteHttpStatus;
+import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.entity.pojo.Qiniu;
+import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.service.ImageService;
 import com.cvte.notesync.utils.QiniuUtil;
 import com.cvte.notesync.utils.RedisKeyUtil;
@@ -25,29 +27,54 @@ public class ImageServiceImpl implements ImageService {
     RedisTemplate redisTemplate;
 
     @Autowired
+    NoteMapper noteMapper;
+
+    @Autowired
     Qiniu qiniu;
 
+    /**
+     * 使用本地filePath上传
+     */
     @Override
     public String insertImage(String filePath, String fileName, int noteId) throws QiniuException {
+        this.checkNoteExistAndValid(noteId);
         String result = QiniuUtil.upload(filePath, fileName);
-        JSONObject jo = JSONObject.parseObject(result);
-        String key = (String) jo.get("key");
-        Assert.isTrue(key.equals(fileName), NoteHttpStatus.QINIU_UPLOAD_FAIL.getErrMsg());
-        return this.insertLinkOfImageInRedis(fileName, noteId);
+        return this.parseResultAndSaveToRedis(result, fileName, noteId);
     }
 
+    /**
+     * 使用File上传
+     */
     @Override
     public String insertImage(File file, String fileName, int noteId) throws QiniuException {
+        this.checkNoteExistAndValid(noteId);
         String result = QiniuUtil.upload(file, fileName);
-        JSONObject jo = JSONObject.parseObject(result);
-        String key = (String) jo.get("key");
-        Assert.isTrue(key.equals(fileName), NoteHttpStatus.QINIU_UPLOAD_FAIL.getErrMsg());
-        return this.insertLinkOfImageInRedis(fileName, noteId);
+        return this.parseResultAndSaveToRedis(result, fileName, noteId);
     }
 
+    /**
+     * 使用字节数组上传
+     */
     @Override
     public String insertImage(byte[] data, String fileName, int noteId) throws QiniuException {
+        this.checkNoteExistAndValid(noteId);
         String result = QiniuUtil.upload(data, fileName);
+        return this.parseResultAndSaveToRedis(result, fileName, noteId);
+    }
+
+    /**
+     * 检查笔记是否存在以及是否有效
+     */
+    private void checkNoteExistAndValid(int noteId) {
+        Note note = noteMapper.selectById(noteId);
+        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
+        Assert.isTrue(note.getStatus() == 1, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
+    }
+
+    /**
+     * 解析七牛返回结果并且保存到redis
+     */
+    private String parseResultAndSaveToRedis(String result, String fileName, int noteId) {
         JSONObject jo = JSONObject.parseObject(result);
         String key = (String) jo.get("key");
         Assert.isTrue(key.equals(fileName), NoteHttpStatus.QINIU_UPLOAD_FAIL.getErrMsg());
@@ -69,7 +96,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     /**
-     * 检查链接是否存在
+     * 检查链接是否已存在于redis
      */
     private void checkLinkExisted(String redisKey, String link) {
         Boolean member = redisTemplate.opsForSet().isMember(redisKey, link);
