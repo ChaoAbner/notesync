@@ -1,6 +1,7 @@
 package com.cvte.notesync.utils;
 
 
+import io.jsonwebtoken.lang.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,5 +55,10 @@ public class ImageUtil {
             img = null;
         }
         return false;
+    }
+
+    public static void checkImageFormat(InputStream is) {
+        boolean isImage = isImage(is);
+        Assert.isTrue(!isImage, "图片格式不正确！");
     }
 }

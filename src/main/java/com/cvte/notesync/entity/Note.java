@@ -15,19 +15,19 @@ public class Note implements Serializable {
     private static final long serialVersionUID = 6472297922229580773L;
 
     @TableId(type = IdType.AUTO)
-    private int id;
+    private Integer id;
 
     private String content;
 
     private String title;
 
-    private int status;
+    private Integer status;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private int userId;
+    private Integer userId;
 
     public Note() {
 

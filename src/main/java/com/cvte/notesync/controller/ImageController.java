@@ -24,15 +24,23 @@ public class ImageController {
     ImageService imageService;
 
     @PostMapping("/note/{noteId}")
-    @ApiOperation("上传图片")
-    public Result insertImage(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
-        // 判断是否是图片
-        boolean isImage = ImageUtil.isImage(file.getInputStream());
-
+    @ApiOperation("上传图片到七牛云")
+    public Result insertImageToCloud(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
+        // 图片格式校验
+        ImageUtil.checkImageFormat(file.getInputStream());
         String link = imageService.insertImage(file.getBytes(), CommonUtil.uuid(), noteId);
         JSONObject jo = new JSONObject();
         jo.put("url", link);
         return Result.success(jo);
+    }
+
+    @PostMapping("/note/local/{noteId}")
+    @ApiOperation("上传图片到本地")
+    public Result insertImageToLocal(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
+        // 图片格式校验
+        ImageUtil.checkImageFormat(file.getInputStream());
+
+        return Result.success();
     }
 
     @GetMapping("/list/note/{noteId}")

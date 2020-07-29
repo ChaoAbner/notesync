@@ -15,11 +15,11 @@ public class User implements Serializable {
     private static final long serialVersionUID = 2996099364362480348L;
 
     @TableId(type = IdType.AUTO)
-    private int id;
+    private Integer id;
 
     private String username;
 
-    private int status;
+    private Integer status;
 
     private Date registerTime;
 

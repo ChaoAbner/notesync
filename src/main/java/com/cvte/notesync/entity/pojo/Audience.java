@@ -18,5 +18,5 @@ public class Audience {
 
     private String name;
 
-    private int expiresSecond;
+    private Integer expiresSecond;
 }

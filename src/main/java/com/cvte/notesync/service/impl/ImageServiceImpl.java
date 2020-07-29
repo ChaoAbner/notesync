@@ -105,8 +105,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<String> getImagesByNoteId(int noteId) {
+        this.checkNoteExistAndValid(noteId);
         String key = RedisKeyUtil.noteImagesKey(noteId);
         Set members = redisTemplate.opsForSet().members(key);
         return new ArrayList<String>(members);
     }
+
+
 }
