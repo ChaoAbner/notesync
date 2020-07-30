@@ -4,6 +4,7 @@ package com.cvte.notesync.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.response.Result;
 import com.cvte.notesync.entity.FileDo;
+import com.cvte.notesync.entity.dto.FileDto;
 import com.cvte.notesync.service.FileService;
 import com.cvte.notesync.service.ImageService;
 import com.cvte.notesync.utils.CommonUtil;
@@ -53,9 +54,9 @@ public class ImageController {
     @PostMapping("/shard/note/{noteId}")
     @ApiOperation("分片上传到本地")
     public Result insertImageToLocalByShard(@PathVariable int noteId,
-                                            @RequestBody FileDo fileDo) throws IOException {
+                                            @RequestBody FileDto fileDto) throws IOException {
 //        ImageUtil.checkImageFormat(fileDo);
-        fileService.saveFile(fileDo);
+        fileService.saveFile(fileDto);
         return Result.success();
     }
 

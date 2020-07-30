@@ -1,6 +1,7 @@
 package com.cvte.notesync.service;
 
 import com.cvte.notesync.entity.FileDo;
+import com.cvte.notesync.entity.dto.FileDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public interface FileService {
     /**
      * 保存一个FileDo
      */
-    int saveFile(FileDo file);
+    int saveFile(FileDto fileDto) throws IOException;
 
     /**
      * 插入一个FileDo

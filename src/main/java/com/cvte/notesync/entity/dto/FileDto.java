@@ -1,24 +1,16 @@
-package com.cvte.notesync.entity;
+package com.cvte.notesync.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Joker Ye
- * @date 2020/7/29
+ * @date 2020/7/30
  */
 @Data
-@TableName("n_file")
-public class FileDo implements Serializable {
+public class FileDto {
 
-    private static final long serialVersionUID = -2334511983250744202L;
-
-    @TableId(type = IdType.AUTO)
     private Integer id;
 
     // 文件唯一表示，MD5
@@ -48,9 +40,13 @@ public class FileDo implements Serializable {
     // 总分片数
     private Integer shardTotal;
 
-    public void init() {
-        Date now = new Date();
-        createTime = now;
-        updateTime = now;
-    }
+    // 文件数据base64
+    private String shard;
+
+//    public void init() {
+//        Date now = new Date();
+//        createTime = now;
+//        updateTime = now;
+//    }
+
 }

@@ -1,7 +1,7 @@
 package com.cvte.notesync.utils;
 
 
-import com.cvte.notesync.entity.FileDo;
+import com.cvte.notesync.entity.dto.FileDto;
 import io.jsonwebtoken.lang.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +65,8 @@ public class ImageUtil {
         Assert.isTrue(isImage, "图片格式不正确！");
     }
 
-    public static void checkImageFormat(FileDo fileDo) throws IOException {
-        String shardBase64 = fileDo.getShard();
+    public static void checkImageFormat(FileDto fileDto) throws IOException {
+        String shardBase64 = fileDto.getShard();
         MultipartFile multipartFile = Base64ToMultipartFileUtil.base64ToMultipart(shardBase64);
         boolean isImage = isImage(Objects.requireNonNull(multipartFile).getInputStream());
         Assert.isTrue(isImage, "图片格式不正确！");
