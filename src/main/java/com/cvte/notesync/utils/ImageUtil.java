@@ -1,15 +1,18 @@
 package com.cvte.notesync.utils;
 
 
+import com.cvte.notesync.entity.FileDo;
 import io.jsonwebtoken.lang.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * @author Joker Ye
@@ -60,5 +63,17 @@ public class ImageUtil {
     public static void checkImageFormat(InputStream is) {
         boolean isImage = isImage(is);
         Assert.isTrue(isImage, "图片格式不正确！");
+    }
+
+    public static void checkImageFormat(FileDo fileDo) throws IOException {
+        String shardBase64 = fileDo.getShard();
+        MultipartFile multipartFile = Base64ToMultipartFileUtil.base64ToMultipart(shardBase64);
+        boolean isImage = isImage(Objects.requireNonNull(multipartFile).getInputStream());
+        Assert.isTrue(isImage, "图片格式不正确！");
+    }
+
+    public static String getSuffix(MultipartFile file) {
+        String[] split = Objects.requireNonNull(file.getOriginalFilename()).split("\\.");
+        return split[split.length - 1];
     }
 }

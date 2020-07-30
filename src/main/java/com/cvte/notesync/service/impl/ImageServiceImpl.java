@@ -2,10 +2,10 @@ package com.cvte.notesync.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.enums.NoteHttpStatus;
-import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.entity.pojo.Qiniu;
 import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.service.ImageService;
+import com.cvte.notesync.utils.CheckValidUtil;
 import com.cvte.notesync.utils.QiniuUtil;
 import com.cvte.notesync.utils.RedisKeyUtil;
 import com.qiniu.common.QiniuException;
@@ -30,6 +30,9 @@ public class ImageServiceImpl implements ImageService {
     private NoteMapper noteMapper;
 
     @Autowired
+    private CheckValidUtil checkValidUtil;
+
+    @Autowired
     private Qiniu qiniu;
 
     /**
@@ -37,7 +40,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String insertImage(String filePath, String fileName, int noteId) throws QiniuException {
-        this.checkNoteExistAndValid(noteId);
+        checkValidUtil.checkNoteExistAndValid(noteId);
         String result = QiniuUtil.upload(filePath, fileName);
         return this.parseResultAndSaveToRedis(result, fileName, noteId);
     }
@@ -47,7 +50,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String insertImage(File file, String fileName, int noteId) throws QiniuException {
-        this.checkNoteExistAndValid(noteId);
+        checkValidUtil.checkNoteExistAndValid(noteId);
         String result = QiniuUtil.upload(file, fileName);
         return this.parseResultAndSaveToRedis(result, fileName, noteId);
     }
@@ -57,18 +60,9 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String insertImage(byte[] data, String fileName, int noteId) throws QiniuException {
-        this.checkNoteExistAndValid(noteId);
+        checkValidUtil.checkNoteExistAndValid(noteId);
         String result = QiniuUtil.upload(data, fileName);
         return this.parseResultAndSaveToRedis(result, fileName, noteId);
-    }
-
-    /**
-     * 检查笔记是否存在以及是否有效
-     */
-    public void checkNoteExistAndValid(int noteId) {
-        Note note = noteMapper.selectById(noteId);
-        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
-        Assert.isTrue(note.getStatus() == 1, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
     }
 
     /**
@@ -105,11 +99,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<String> getImagesByNoteId(int noteId) {
-        this.checkNoteExistAndValid(noteId);
+        checkValidUtil.checkNoteExistAndValid(noteId);
         String key = RedisKeyUtil.noteImagesKey(noteId);
         Set members = redisTemplate.opsForSet().members(key);
         return new ArrayList<String>(members);
     }
-
-
 }

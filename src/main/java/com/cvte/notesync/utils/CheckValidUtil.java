@@ -4,10 +4,17 @@ import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
 import com.cvte.notesync.constant.ValidValue;
 import com.cvte.notesync.entity.Note;
+import com.cvte.notesync.mapper.NoteMapper;
 import io.jsonwebtoken.lang.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings("ALL")
+@Component
 public class CheckValidUtil {
+
+    @Autowired
+    NoteMapper noteMapper;
 
     /**
      * 检查笔记的content和title长度
@@ -47,5 +54,14 @@ public class CheckValidUtil {
         if (username.length() > ValidValue.USERNAME_MAX_LENGTH) {
             throw new NoteException(NoteHttpStatus.PARAMETER_ERROR);
         }
+    }
+
+    /**
+     * 检查笔记是否存在并且合法
+     */
+    public void checkNoteExistAndValid(int noteId) {
+        Note note = noteMapper.selectById(noteId);
+        Assert.notNull(note, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
+        Assert.isTrue(note.getStatus() == 1, NoteHttpStatus.NOTE_NOT_EXIST.getErrMsg());
     }
 }

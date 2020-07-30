@@ -22,7 +22,7 @@ public class FileDo implements Serializable {
     private Integer id;
 
     // 文件唯一表示，MD5
-    private String key;
+    private String md5Key;
 
     // 文件的路径，比如: 127.0.0.1:8899/file/sd34jhsdf83.jpg
     private String path;
@@ -43,14 +43,10 @@ public class FileDo implements Serializable {
     private Integer shardIndex;
 
     // 总分片数
-    private Integer totalShard;
+    private Integer shardTotal;
 
     // 文件数据base64
     private String shard;
-
-    FileDo() {
-        init();
-    }
 
     public void init() {
         Date now = new Date();

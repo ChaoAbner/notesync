@@ -3,6 +3,7 @@ package com.cvte.notesync.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cvte.notesync.common.response.Result;
+import com.cvte.notesync.entity.FileDo;
 import com.cvte.notesync.service.FileService;
 import com.cvte.notesync.service.ImageService;
 import com.cvte.notesync.utils.CommonUtil;
@@ -27,9 +28,10 @@ public class ImageController {
     @Autowired
     FileService fileService;
 
-    @PostMapping("/note/{noteId}")
+    @PostMapping("/qiniu/note/{noteId}")
     @ApiOperation("上传图片到七牛云")
-    public Result insertImageToCloud(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
+    public Result insertImageToCloud(@PathVariable int noteId,
+                                     @RequestParam("file") MultipartFile file) throws IOException {
         // 图片格式校验
         ImageUtil.checkImageFormat(file.getInputStream());
         String link = imageService.insertImage(file.getBytes(), CommonUtil.getUuid(), noteId);
@@ -38,13 +40,30 @@ public class ImageController {
         return Result.success(jo);
     }
 
-    @PostMapping("/note/local/{noteId}")
+    @PostMapping("/local/note/{noteId}")
     @ApiOperation("上传图片到本地")
-    public Result insertImageToLocal(@PathVariable int noteId, @RequestParam("file") MultipartFile file) throws IOException {
+    public Result insertImageToLocal(@PathVariable int noteId,
+                                     @RequestParam("file") MultipartFile file) throws IOException {
         // 图片格式校验
         ImageUtil.checkImageFormat(file.getInputStream());
         fileService.saveMultipartFile(file, CommonUtil.getShortUuid(), noteId);
         return Result.success();
+    }
+
+    @PostMapping("/shard/note/{noteId}")
+    @ApiOperation("分片上传到本地")
+    public Result insertImageToLocalByShard(@PathVariable int noteId,
+                                            @RequestBody FileDo fileDo) throws IOException {
+//        ImageUtil.checkImageFormat(fileDo);
+        fileService.saveFile(fileDo);
+        return Result.success();
+    }
+
+    @GetMapping("/shard/check")
+    @ApiOperation("检查是否有分片")
+    public Result insertImageToLocalByShard(String key) throws IOException {
+        FileDo fileDo = fileService.selectFileByKey(key);
+        return Result.success(fileDo);
     }
 
     @GetMapping("/list/note/{noteId}")
