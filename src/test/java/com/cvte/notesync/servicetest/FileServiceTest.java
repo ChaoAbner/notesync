@@ -36,8 +36,8 @@ public class FileServiceTest {
         fileDo.setShardIndex(1);
         fileDo.setShardSize(123234);
         fileDo.setShardTotal(4);
-        fileDo.setShard("sdfdf1243sdfd");
-        int i = fileService.saveFile(fileDo);
-        System.out.println(i);
+//        fileDo.setShard("sdfdf1243sdfd");
+//        int i = fileService.saveFile(fileDo);
+//        System.out.println(i);
     }
 }

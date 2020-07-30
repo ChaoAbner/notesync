@@ -68,9 +68,10 @@ public class FileServiceImpl implements FileService {
         FileDo fileDb = this.selectFileByKey(fileDo.getMd5Key());
         if (fileDb == null) {
             // 新建
-            this.insertFile(fileDb);
+            this.insertFile(fileDo);
         } else {
             // 更新
+            fileDb.setShardIndex(fileDo.getShardIndex());
             this.updateFile(fileDb);
         }
         return 1;
@@ -97,8 +98,10 @@ public class FileServiceImpl implements FileService {
         String fileUrl = generatePath(this.domain, fileDto.getMd5Key(), ".", fileDto.getSuffix());
         fileDto.setPath(fileUrl);
         logger.info("当前分片索引为：{}", fileDto.getShardIndex());
+
         // 3、判断当前分片是否等于总分片，是的话调用合并
         if (fileDto.getShardIndex() == fileDto.getShardTotal()) {
+            logger.info("当前是最后一块分片，准备合并所有分片");
             this.merge(fileDto, path);
         }
         return fileDto;
@@ -116,6 +119,7 @@ public class FileServiceImpl implements FileService {
         int len;
         try {
             for (int i = 1; i <= shardTotal; i++) {
+                logger.info("正在合并第{}个分片", i);
                 inputStream = new FileInputStream(new File(this.generatePath(destPath, ".", String.valueOf(i))));
                 // 当有数据的时候
                 while ((len = inputStream.read(byt)) != -1) {
@@ -150,11 +154,11 @@ public class FileServiceImpl implements FileService {
                 for (int i = 1; i <= fileDto.getShardTotal(); i++) {
                     File file = new File(generatePath(destPath, ".", String.valueOf(i)));
                     boolean deleteResult = file.delete();
-                    logger.info("删除第{}个分片{}", fileDto.getShardIndex(), deleteResult ? "成功" : "失败");
+                    logger.info("删除第{}个分片{}", i, deleteResult ? "成功" : "失败");
                 }
                 logger.info("删除分片结束");
             }
-        }, 500, TimeUnit.MILLISECONDS);
+        }, 1000, TimeUnit.MILLISECONDS);
     }
 
     private String generatePath(String... paths) {
@@ -188,7 +192,7 @@ public class FileServiceImpl implements FileService {
         if (fileDo != null) {
             logger.info("———— key存在，当前分片信息为：{} ————", fileDo.getShardIndex());
         } else {
-            logger.info("———— keyb不存在，将从第一个分片开始上传 ————");
+            logger.info("———— key不存在，从第一个分片开始上传 ————");
         }
         return fileDo;
     }
