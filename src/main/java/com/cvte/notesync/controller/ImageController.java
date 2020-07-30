@@ -47,22 +47,26 @@ public class ImageController {
                                      @RequestParam("file") MultipartFile file) throws IOException {
         // 图片格式校验
         ImageUtil.checkImageFormat(file.getInputStream());
-        fileService.saveMultipartFile(file, CommonUtil.getShortUuid(), noteId);
-        return Result.success();
+        String link = fileService.saveMultipartFile(file, CommonUtil.getShortUuid(), noteId);
+        JSONObject jo = new JSONObject();
+        jo.put("url", link);
+        return Result.success(jo);
     }
 
     @PostMapping("/shard/note/{noteId}")
-    @ApiOperation("分片上传到本地")
+    @ApiOperation("上传文件分片到本地")
     public Result insertImageToLocalByShard(@PathVariable int noteId,
                                             @RequestBody FileDto fileDto) throws IOException {
-//        ImageUtil.checkImageFormat(fileDo);
-        fileService.saveFile(fileDto);
-        return Result.success();
+//        ImageUtil.checkImageFormat(fileDto);
+        int result = fileService.saveFile(fileDto, noteId);
+        JSONObject jo = new JSONObject();
+        jo.put("result", result);
+        return Result.success(jo);
     }
 
     @GetMapping("/shard/check")
-    @ApiOperation("检查是否有分片")
-    public Result insertImageToLocalByShard(String key) throws IOException {
+    @ApiOperation("检查某个文件是否有分片")
+    public Result insertImageToLocalByShard(String key) {
         FileDo fileDo = fileService.selectFileByKey(key);
         return Result.success(fileDo);
     }

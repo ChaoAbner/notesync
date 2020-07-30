@@ -16,7 +16,7 @@ public interface FileService {
     /**
      * 保存一个FileDo
      */
-    int saveFile(FileDto fileDto) throws IOException;
+    int saveFile(FileDto fileDto, int noteId) throws IOException;
 
     /**
      * 插入一个FileDo

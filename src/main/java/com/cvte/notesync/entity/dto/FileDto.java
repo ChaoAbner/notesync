@@ -11,8 +11,6 @@ import java.util.Date;
 @Data
 public class FileDto {
 
-    private Integer id;
-
     // 文件唯一表示，MD5
     private String md5Key;
 
@@ -42,11 +40,4 @@ public class FileDto {
 
     // 文件数据base64
     private String shard;
-
-//    public void init() {
-//        Date now = new Date();
-//        createTime = now;
-//        updateTime = now;
-//    }
-
 }

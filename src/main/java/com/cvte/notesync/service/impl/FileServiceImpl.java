@@ -61,20 +61,24 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int saveFile(FileDto fileDto) throws IOException {
+    public int saveFile(FileDto fileDto, int noteId) throws IOException {
         // 上传文件
         fileDto = this.upload(fileDto);
         FileDo fileDo = CopyUtil.copy(fileDto, FileDo.class);
         FileDo fileDb = this.selectFileByKey(fileDo.getMd5Key());
+        int result = -1;
         if (fileDb == null) {
             // 新建
-            this.insertFile(fileDo);
+            result = this.insertFile(fileDo);
         } else {
             // 更新
             fileDb.setShardIndex(fileDo.getShardIndex());
-            this.updateFile(fileDb);
+            result = this.updateFile(fileDb);
         }
-        return 1;
+        if (fileDto.getShardIndex() == fileDto.getShardTotal()) {
+            imageService.insertLinkOfImageToRedis(fileDto.getPath(), noteId);
+        }
+        return result;
     }
 
     /**

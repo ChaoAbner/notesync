@@ -72,15 +72,15 @@ public class ImageServiceImpl implements ImageService {
         JSONObject jo = JSONObject.parseObject(result);
         String key = (String) jo.get("key");
         Assert.isTrue(key.equals(fileName), NoteHttpStatus.QINIU_UPLOAD_FAIL.getErrMsg());
-        return this.insertLinkOfImageInRedis(fileName, noteId);
+        String link = qiniu.getBucket().getUrl() + fileName;
+        return this.insertLinkOfImageToRedis(link, noteId);
     }
 
     /**
      * 插入到redis
      */
-    private String insertLinkOfImageInRedis(String fileName, int noteId) {
+    public String insertLinkOfImageToRedis(String link, int noteId) {
         String key = RedisKeyUtil.noteImagesKey(noteId);
-        String link = qiniu.getBucket().getUrl() + fileName;
         // 检查链接是否存在
         this.checkLinkExisted(key, link);
         // 添加到redis集合
