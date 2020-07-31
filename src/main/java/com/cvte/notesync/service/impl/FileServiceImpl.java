@@ -106,12 +106,15 @@ public class FileServiceImpl implements FileService {
         // 3、判断当前分片是否等于总分片，是的话调用合并
         if (fileDto.getShardIndex() == fileDto.getShardTotal()) {
             logger.info("当前是最后一块分片，准备合并所有分片");
-            this.merge(fileDto, path);
+            this.mergeShards(fileDto, path);
         }
         return fileDto;
     }
 
-    private void merge(FileDto fileDto, String destPath) throws FileNotFoundException {
+    /**
+     * 合并所有分片
+     */
+    private void mergeShards(FileDto fileDto, String destPath) throws FileNotFoundException {
         logger.info("合并分片开始");
         Integer shardTotal = fileDto.getShardTotal();
         File file = new File(destPath);
@@ -150,6 +153,9 @@ public class FileServiceImpl implements FileService {
         this.deleteShards(fileDto, destPath);
     }
 
+    /**
+     * 删除所有分片
+     */
     private void deleteShards(FileDto fileDto, String destPath) {
         executor.schedule(new Runnable() {
             @Override

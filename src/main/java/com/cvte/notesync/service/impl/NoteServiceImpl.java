@@ -7,6 +7,7 @@ import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
 import com.cvte.notesync.mapper.UserMapper;
 import com.cvte.notesync.service.NoteService;
+import com.cvte.notesync.utils.DateTimeUtil;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -68,6 +69,11 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note updateNote(Note note, long updateTimeStamp, int userId) {
+        Note noteDb = noteMapper.selectById(note.getId());
+        if (noteDb.getUpdateTime().after(DateTimeUtil.TimeStampToDate(updateTimeStamp))) {
+            // 弱网情况，如果数据库中记录的更新时间晚于当前请求的更新时间，那么说明本次请求要被抛弃
+            return noteDb;
+        }
         // 更新时间
         note.setUpdateTime(new Date(updateTimeStamp));
         note.setUserId(userId);

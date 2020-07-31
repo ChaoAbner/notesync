@@ -53,7 +53,7 @@ public class ImageController {
         return Result.success(jo);
     }
 
-    @PostMapping("/shard/note/{noteId}")
+    @PostMapping("/local/shard/note/{noteId}")
     @ApiOperation("上传文件分片到本地")
     public Result insertImageToLocalByShard(@PathVariable int noteId,
                                             @RequestBody FileDto fileDto) throws IOException {
