@@ -2,6 +2,7 @@ package com.cvte.notesync.utils;
 
 import com.cvte.notesync.common.enums.NoteHttpStatus;
 import com.cvte.notesync.common.exception.NoteException;
+import com.cvte.notesync.constant.RestfulURI;
 import com.cvte.notesync.constant.ValidValue;
 import com.cvte.notesync.entity.Note;
 import com.cvte.notesync.mapper.NoteMapper;
@@ -16,11 +17,21 @@ public class CheckValidUtil {
     @Autowired
     NoteMapper noteMapper;
 
+    public static void checkValidParameter(Object[] args, String uri) {
+        if (uri.startsWith(RestfulURI.SESSION_PATH) ||
+                uri.startsWith(RestfulURI.USER_PATH)) {
+            checkUser(args);
+        } else if (uri.startsWith(RestfulURI.NOTE_PATH) ||
+                uri.startsWith(RestfulURI.SYNC_PATH)) {
+            checkNote(args);
+        }
+    }
+
     /**
      * 检查笔记的content和title长度
      * @param note
      */
-    public static void checkNote(Object[] args) {
+    private static void checkNote(Object[] args) {
         Note note = null;
         for (Object arg : args) {
             if (arg instanceof Note) {
@@ -42,7 +53,7 @@ public class CheckValidUtil {
      * 检查用户名的长度
      * @param username
      */
-    public static void checkUser(Object[] args) {
+    private static void checkUser(Object[] args) {
         String username = null;
         for (Object arg : args) {
             if (arg instanceof String) {

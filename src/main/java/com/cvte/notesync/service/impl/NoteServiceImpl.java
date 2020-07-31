@@ -71,7 +71,7 @@ public class NoteServiceImpl implements NoteService {
     public Note updateNote(Note note, long updateTimeStamp, int userId) {
         Note noteDb = noteMapper.selectById(note.getId());
         if (noteDb.getUpdateTime().after(DateTimeUtil.TimeStampToDate(updateTimeStamp))) {
-            // 弱网情况，如果数据库中记录的更新时间晚于当前请求的更新时间，那么说明本次请求要被抛弃
+            // 弱网情况，如果数据库中记录的更新时间晚于当前请求的更新时间，那么抛弃本次请求
             return noteDb;
         }
         // 更新时间

@@ -1,6 +1,5 @@
 package com.cvte.notesync.common.aop.aspect;
 
-import com.cvte.notesync.constant.RestfulURI;
 import com.cvte.notesync.utils.CheckValidUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -34,17 +33,12 @@ public class ValidParameterAspect {
             return;
         }
         HttpServletRequest request = requestAttributes.getRequest();
+        // 参数
         Object[] args = joinPoint.getArgs();
-
-        // 获取uri
+        // uri
         String uri = request.getRequestURI();
-        if (uri.startsWith(RestfulURI.SESSION_PATH) ||
-                uri.startsWith(RestfulURI.USER_PATH)) {
-            CheckValidUtil.checkUser(args);
-        } else if (uri.startsWith(RestfulURI.NOTE_PATH) ||
-                uri.startsWith(RestfulURI.SYNC_PATH)) {
-            CheckValidUtil.checkNote(args);
-        }
+        CheckValidUtil.checkValidParameter(args, uri);
+
         logger.info("url: {}, 方法: {}, 接口参数合法性校验通过", request.getRequestURL(), request.getMethod());
     }
 }
